@@ -1,6 +1,6 @@
 import { useRef, useState, useContext, useEffect } from "react";
 import Context from "../utils/context";
-import Dashlayout from "./dashlayout";
+import Layout from "./layout";
 import { styles } from '../utils/style';
 import editImg from '../assets/edit.png';
 import removeImg from '../assets/remove.png';
@@ -94,8 +94,8 @@ export default function GuestsManager() {
   };
 
   return (
-    <Dashlayout title={title}>
-      <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 ">
+    <Layout title={title}>
+      <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 w-[600px]">
         <table>
           <thead>
             <tr className={styles.label}>
@@ -130,13 +130,12 @@ export default function GuestsManager() {
             </tbody>
         </table>
       </div>
-
-      <div className={styles.subTitle + " mt-5"}>Total Amount: {guests.amount}</div>
-
-      <button onClick={handleOpenDialog} className={styles.button + " w-[200px] mx-auto text-center"}>Add Guest</button>
-
+      <div className="flex flex-col justify-center">
+        <div className={styles.subTitle + " mt-5"}>Total Amount: {guests.amount}</div>
+        <button onClick={handleOpenDialog} className={"bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded" + " w-[200px] mx-auto text-center"}>Add Guest</button>
+      </div>
       {isDialogOpen && <InputDialog onConfirm={handleConfirmDialog} onCancel={handleCancelDialog} />}
       
-    </Dashlayout>
+    </Layout>
   );
 }

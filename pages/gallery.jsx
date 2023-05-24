@@ -1,21 +1,13 @@
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
 import Context from "../utils/context";
-import { useReducer, useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { pages } from "../utils/pages";
-import { database } from "../utils/firebase";
-import Link from 'next/link'
 
-export default function MyAccount({ user }) {
+export default function Gallery() {
   const { state, dispatch } = useContext(Context);
   const [appVisible, setAppVisible] = useState(false);
 
   useEffect(() => {
-    if (state.user === null) {
-      dispatch({ type: "SET_VIEW", param: "login" })
-    } else {
-      dispatch({ type: "SET_VIEW", param: "dashboard" })
-    }
+    dispatch({ type: "SET_VIEW", param: "gallery" });
     setAppVisible(true);
   }, []);
 
