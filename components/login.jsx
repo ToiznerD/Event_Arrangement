@@ -54,19 +54,19 @@ const handleSubmit = async (e) => {
  
     return (
       <Layout title="Event Management">
-              <div>
-                <form onSubmit={handleSubmit}>
-                    <div className={styles.label}>Username</div>
-                    <div><input type="text" className={styles.textInput} required ref={nameRef} /></div>
-                    <div className={styles.label}>Password</div>
-                    <div><input type="password" className={styles.textInput} required ref={passwordRef} /></div>
-                    <div className="mt-4 flex justify-center items-center flex-col">
-                        <button type="submit" className={styles.buttonLogin}>Login</button>
-                    
-                    <button onClick={() => dispatch({ type: "SET_VIEW", param: "register" })} className={styles.link + " ml-3"}>You don't have an account ? Sign Up!</button>
-                    </div>
-                </form>
+             
+          <form onSubmit={handleSubmit}>
+            <div className="mt-4 flex justify-center items-center flex-col">
+                <div className={styles.label}>Username</div>
+                <input type="text" className={styles.textInput} required ref={nameRef} />
+                <div className={styles.label}>Password</div>
+                <input type="password" className={styles.textInput} required ref={passwordRef} />
+                
+                <button type="submit" className={styles.buttonLogin}>Login</button>
+                <button onClick={() => dispatch({ type: "SET_VIEW", param: "register" })} className={styles.link + " ml-3"}>You don't have an account ? Sign Up!</button>
               </div>
+           </form>
+           
         </Layout>
     );
 }

@@ -1,5 +1,5 @@
 export const initState = {
-  view: "home2", //home, existing, create, restore,dashboard
+  view: "home",
   user: null,
   error: "",
 };

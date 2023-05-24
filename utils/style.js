@@ -5,7 +5,7 @@ export const styles = {
   link: "text-gray-300 hover:text-gray-500 font-bold font-base cursor-pointer",
   textInput: "border-2 border-gray-300 w-[300px] rounded-md",
   buttonLogin:
-    "bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded w-[250px] h-[60px] m-3",
+    "bg-gray-400 hover:bg-gray-500 text-white font-bold mt-2 py-2 px-4 rounded w-[250px] h-[60px] m-3",
   button:
     "bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded",
   buttonReg:

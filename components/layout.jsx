@@ -3,10 +3,12 @@ import { useContext, useEffect } from "react"
 import Context from "../utils/context"
 import Error from './error'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 export default function Layout({ children, title }) {
     const { state, dispatch } = useContext(Context)
-
+    const router = useRouter()
+    
     useEffect(() => {
         if (state.error !== '') {
             const timer = setTimeout(() => {
@@ -18,15 +20,24 @@ export default function Layout({ children, title }) {
 
     return (
         <div>
-            <div className="border-2 border-white rounded-3xl shadow-lg shadow-slate-500 min-h-[300px] mx-auto w-[500px] overflow-hidden">
+            <div className="border-2 border-white rounded-3xl shadow-lg shadow-slate-500 min-h-[300px] mx-auto min-w-[500px] overflow-hidden">
                 <nav className={styles.navigationBar}>
                     <ul className="flex space-x-5">
                         <li><Link href="/" className={styles.navigationLink}>Home</Link></li>
-                        <li><Link href="#" className={styles.navigationLink} onClick={() => dispatch({type: "SET_VIEW", param: "about"})}>About</Link></li>
-                        <li><Link href="#" className={styles.navigationLink} onClick={() => dispatch({type: "SET_VIEW", param: "gallery"})}>Gallery</Link></li>
-                        <li><Link href="#" className={styles.navigationLink} onClick={() => dispatch({type: "SET_VIEW", param: "contact"})}>Contact</Link></li>
+                        <li><Link href="about" className={styles.navigationLink}>About</Link></li>
+                        <li><Link href="gallery" className={styles.navigationLink}>Gallery</Link></li>
+                        <li><Link href="contact" className={styles.navigationLink}>Contact</Link></li>
                     </ul>
-                    <Link href="/myaccount" className="text-white font-bold text-xl cursor-pointer">{state.user === null ? `Login` : `My Account`}</Link>
+                    <Link href="myaccount" className="text-white font-bold text-xl cursor-pointer" onClick={() => { state.user !== null ? dispatch({ type: "SET_VIEW", param: "dashboard" }) : null }}>{state.user === null ? `Login` : `My Account`}</Link>
+                    {state.user !== null && 
+                        <Link href="/" className={styles.link + " mt-4"} onClick={(e) => {
+                            e.preventDefault();
+                            router.push('/').then(() => {
+                                dispatch({ type: "SET_USER", param: null });
+                            });
+                        }}>
+                            Logout
+                        </Link>}
                 </nav>
                 <div className="p-4">
                     {children}
