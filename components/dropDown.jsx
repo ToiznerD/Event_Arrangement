@@ -1,6 +1,4 @@
 import { useState, useContext} from "react";
-import Link from 'next/link'
-import { styles } from '../utils/style'
 import { useRouter } from 'next/router'
 import Context from "../utils/context"
 
@@ -13,6 +11,13 @@ const Dropdown = () => {
     setIsOpen(!isOpen);
   };
 
+  const logout = (e) => {
+    e.preventDefault()
+    localStorage.removeItem('user')
+    dispatch({type: "SET_VIEW", param: "home"})
+    router.push('/')
+  }
+
   return (
     <div className="relative">
       <button
@@ -23,23 +28,9 @@ const Dropdown = () => {
       </button>
       {isOpen && (
         <div className="absolute text-white rounded-md shadow-lg">
-                  {/* Dropdown menu items here */}
-                  <div className="text-white bg-gray-800 rounded-b-lg p-2" onClick={async (e) => {
-                        e.preventDefault();
-                        const response = await fetch('/api/logout', {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify()
-                        })
-                      if (response.ok) {
-                          dispatch({type: "SET_VIEW", param: "myaccount"})
-                          router.push('/')
-                      }
-                        }}>
+                  <div className="text-white hover:font-bold cursor-pointer bg-gray-800 rounded-b-lg p-2" onClick={(e)=>logout(e)}>
                             Logout
-                        </div>
+                  </div>
         </div>
       )}
     </div>

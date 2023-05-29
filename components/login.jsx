@@ -2,8 +2,6 @@ import { useContext, useEffect, useRef} from "react"
 import Context from "../utils/context"
 import Layout from "./layout"
 import { styles } from "../utils/style"
-import { database } from "../utils/firebase"
-import cookie from "js-cookie"
 
 
 export default function Login() {
@@ -31,11 +29,11 @@ const handleSubmit = async (e) => {
     })
 
     if (response.ok) {
-      dispatch({ type: "SET_USER", param: (await response.json()).user })
+      localStorage.setItem("user", JSON.stringify(await response.json()))
       dispatch({ type: "SET_VIEW", param: "dashboard" })
     }
     else {
-      res = response.json()
+      res = await response.json()
       dispatch({type: "SET_ERROR", param: res.message})
     }
 

@@ -7,8 +7,6 @@ import removeImg from '../assets/remove.png';
 import confirm from '../assets/confirm.png';
 import InputDialog from "./input_dialog";
 import Image from 'next/image';
-import { database } from '../utils/firebase';
-import Cookies from 'js-cookie'
 
 export default function GuestsManager({data}) {
   const { state, dispatch } = useContext(Context);
@@ -18,25 +16,10 @@ export default function GuestsManager({data}) {
   const [guests, setGuests] = useState({guests: [], amount: 0});
   const [editingGuestIndex, setEditingGuestIndex] = useState(null);
 
-  // const initGuests = {
-  //   guests: [
-  //     { name: 'shmiloviz', amount: 7, category: "bride's family" },
-  //     { name: "haimovich", amount: 6, category: "grooms family" },
-  //     { name: "ori sason", amount: 2, category: "grooms friends" },
-  //     { name: "shiry shimshon", amount: 3, category: "grooms friends" },
-  //     { name: "Leonardo messi", amount: 2, category: "bride's ex's" },
-  //     { name: "Kylian Mbape", amount: 2, category: "bride's ex's" },
-  //     { name: "Omer Atzili", amount: 2, category: "grooms coworkers" },
-  //     { name: "Dolev Haziza", amount: 2, category: "grooms coworkers" },
-  //     { name: "Abdulai Seck", amount: 2, category: "grooms coworkers" }
-  //   ],
-  //   amount: 28
-  // };
-  //let initGuests = {guests: []};
 
   useEffect(() => {
     
-    const user = JSON.parse(Cookies.get("token"))
+    const user = JSON.parse(localStorage.getItem('user'))
     async function fetchData() {
       const response = await fetch('/api/guests', {
         method: "POST",
@@ -86,8 +69,6 @@ export default function GuestsManager({data}) {
   };
 
   const handleCancelDialog = () =>  setIsDialogOpen(false);
-;
-
 
   const updateGuest = (index) => {
     const amtToRemove = guests.guests[index].amount - editGuest.current.value
@@ -109,6 +90,24 @@ export default function GuestsManager({data}) {
 
     setGuests(updatedGuests);
   };
+
+  const saveChanges = async () => {
+    const user = JSON.parse(localStorage.getItem('user'))
+    const response = await fetch('/api/update_guests', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ userId: user.userId, guests: guests})
+    })
+
+    if (response.ok) {
+      let res = await response.json();
+      console.log(res)
+      dispatch({type: "SET_ERROR", param: "Changes have been saved successfully"})
+    }
+  }
+  
 
   return (
     <Layout title={title}>
@@ -144,7 +143,7 @@ export default function GuestsManager({data}) {
                   </td>
                   <td className="px-4">{guest.category}</td>
                   <td className="px-4">
-                    <Image alt="" title="Delete guest" src={removeImg} className="cursor-pointer" onClick={() => deleteGuest(index)} width={15} height={15} />
+                    <Image alt="" title="Delete guest" src={removeImg} className="cursor-pointer ml-5" onClick={() => deleteGuest(index)} width={15} height={15} />
                   </td>
                 </tr>
               )
@@ -155,10 +154,11 @@ export default function GuestsManager({data}) {
       <div className="flex flex-col justify-center">
         <div className={styles.subTitle + " mt-5"}>Total Amount: {guests.amount}</div>
         <button onClick={handleOpenDialog} className={"bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded" + " w-[200px] mx-auto text-center"}>Add Guest</button>
+        <button onClick={saveChanges} className={"bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 mt-2 rounded" + " w-[200px] mx-auto text-center"}>Save Changes</button>
       </div>
       {isDialogOpen && <InputDialog onConfirm={handleConfirmDialog} onCancel={handleCancelDialog} />}
       
-    </Layout>
+      </Layout>
   );
 
   

@@ -11,7 +11,7 @@ export default function MyAccount({ user }) {
   const [appVisible, setAppVisible] = useState(false);
 
   useEffect(() => {
-    if (Cookies.get("token") === undefined) {
+    if (localStorage.getItem('user') === null) {
       dispatch({ type: "SET_VIEW", param: "login" })
     } else {
       dispatch({ type: "SET_VIEW", param: "dashboard" })
