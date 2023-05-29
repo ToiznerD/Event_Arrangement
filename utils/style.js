@@ -13,4 +13,7 @@ export const styles = {
   navigationLink: "text-white hover:font-bold",
   navigationBar:
     "flex items-center justify-between bg-gray-800 p-4 rounded-t-lg",
+  normalRow: "py-2 text-center cursor-pointer bg-gray-300",
+  selectedRow: "py-2 text-center cursor-pointer bg-gray-300 font-bold",
+  td: "py-2 text-center cursor-pointer"
 };
