@@ -14,7 +14,7 @@ const Dropdown = () => {
   const logout = (e) => {
     e.preventDefault()
     localStorage.removeItem('user')
-    dispatch({type: "SET_VIEW", param: "home"})
+    dispatch({type: "SET_VIEW", param: "myaccount"})
     router.push('/')
   }
 
