@@ -7,6 +7,8 @@ import About from '../components/about'
 import Gallery from '../components/gallery'
 import Contact from '../components/contact'
 import Layout from '../components/layout'
+import ManageTablesSeats from '../components/manage_table_seats'
+
 export const pages = {
     home: <Home />,
     login: <Login />,
@@ -16,5 +18,6 @@ export const pages = {
     about: <About />,
     gallery: <Gallery />,
     contact: <Contact />,
-    myaccount: <Layout />
+    myaccount: <Layout />,
+    manage_table_seats: <ManageTablesSeats />
 }
