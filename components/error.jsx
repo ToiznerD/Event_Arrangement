@@ -5,6 +5,6 @@ export default function Error() {
     const { state, dispatch } = useContext(Context)
 
     return (
-        <div className="mt-2 text-red-500 font-bold">{state.error}</div>
+        <div className="ml-3 mt-2 text-red-500 font-bold">{state.error}</div>
     );
 }
