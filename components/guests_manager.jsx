@@ -95,7 +95,7 @@ export default function GuestsManager() {
 
   return (
     <Layout title={title}>
-      <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 w-[600px]">
+      <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 max-h-[300px] scrollbar-track-gray-100 w-[600px]">
         <table>
           <thead>
             <tr className={styles.label}>
