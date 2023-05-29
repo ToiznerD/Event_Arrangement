@@ -4,14 +4,14 @@ import Context from "../utils/context";
 import { useReducer, useEffect, useState, useContext } from "react";
 import { pages } from "../utils/pages";
 import { database } from "../utils/firebase";
-import Link from 'next/link'
+import Cookies from 'js-cookie'
 
 export default function MyAccount({ user }) {
   const { state, dispatch } = useContext(Context);
   const [appVisible, setAppVisible] = useState(false);
 
   useEffect(() => {
-    if (state.user === null) {
+    if (Cookies.get("token") === undefined) {
       dispatch({ type: "SET_VIEW", param: "login" })
     } else {
       dispatch({ type: "SET_VIEW", param: "dashboard" })

@@ -3,6 +3,8 @@ import Context from "../utils/context"
 import Layout from "./layout"
 import { styles } from "../utils/style"
 import { database } from "../utils/firebase"
+import cookie from "js-cookie"
+
 
 export default function Login() {
   const { state, dispatch } = useContext(Context)
@@ -14,39 +16,29 @@ export default function Login() {
     nameRef.current.focus()
     passwordRef.current.focus()
 }, [])
-
-  const searchUser = async (username) => {
-    const snapshot = await database.ref('Users').orderByChild('username').equalTo(username).once('value');
-    if (snapshot.exists()) {
-      // User exists in the database
-      console.log(snapshot.val())
-      if (Array.isArray(snapshot.val())) {
-        // Multiple users with the same username, extract the second element
-        userData = snapshot.val()[1];
-      } else {
-        // Single user with the given username
-        userData = Object.values(snapshot.val())[0];
-      }
-    }
-  }
   
 const handleSubmit = async (e) => {
+  e.preventDefault()
+  let username = nameRef.current.value
+  let password = passwordRef.current.value
   try {
-    e.preventDefault()
-    await searchUser(nameRef.current.value)
-    if(userData != null){
-      console.log('User data:', userData)
-      if (passwordRef.current.value === userData.password) {
-        dispatch({ type: "SET_USER", param: userData })
-        dispatch({ type: "SET_VIEW", param: "dashboard" })
-        
-      } else {
-        dispatch({type: "SET_ERROR", param: "Wrong password"})
-      }
-    } else {
-        // User does not exist in the database
-        dispatch({type: "SET_ERROR", param: "No such user exists: " + nameRef.current.value})
-      }
+    const response = await fetch('/api/login', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ token: {username: username, password: password}})
+    })
+
+    if (response.ok) {
+      dispatch({ type: "SET_USER", param: (await response.json()).user })
+      dispatch({ type: "SET_VIEW", param: "dashboard" })
+    }
+    else {
+      res = response.json()
+      dispatch({type: "SET_ERROR", param: res.message})
+    }
+
   } catch (error) {
     console.error(error);
   }

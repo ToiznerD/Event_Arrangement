@@ -4,7 +4,9 @@ import Context from "../utils/context"
 import Error from './error'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-
+import Cookies from 'js-cookie'
+import cookie from 'cookie'
+import Dropdown from './dropDown'
 export default function Layout({ children, title }) {
     const { state, dispatch } = useContext(Context)
     const router = useRouter()
@@ -28,16 +30,8 @@ export default function Layout({ children, title }) {
                         <li><Link href="gallery" className={styles.navigationLink}>Gallery</Link></li>
                         <li><Link href="contact" className={styles.navigationLink}>Contact</Link></li>
                     </ul>
-                    <Link href="myaccount" className="text-white font-bold text-xl cursor-pointer" onClick={() => { state.user !== null ? dispatch({ type: "SET_VIEW", param: "dashboard" }) : null }}>{state.user === null ? `Login` : `My Account`}</Link>
-                    {state.user !== null && 
-                        <Link href="/" className={styles.link + " mt-4"} onClick={(e) => {
-                            e.preventDefault();
-                            router.push('/').then(() => {
-                                dispatch({ type: "SET_USER", param: null });
-                            });
-                        }}>
-                            Logout
-                        </Link>}
+                    <Link href="myaccount" className={styles.navigationLink + " font-bold"} onClick={() => (Cookies.get("token") !== undefined ? dispatch({type: "SET_VIEW", param: "dashboard"}) : null)}>{Cookies.get("token") === undefined ? `Login` : <div className="flex  justify-center">My Account<Dropdown /></div>}</Link>
+                    
                 </nav>
                 <div className="p-4">
                     {children}

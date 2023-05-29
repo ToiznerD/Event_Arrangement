@@ -2,10 +2,13 @@ import { useRef, useState, useContext, useEffect } from "react";
 import Context from "../utils/context";
 import Layout from "./layout";
 import { styles } from '../utils/style'
+import Cookies from 'js-cookie'
 
 export default function Dashboard() {
   const { state, dispatch } = useContext(Context);
-  const title = "Welcome back " + state.user.username
+  let user = JSON.parse(Cookies.get("token"))
+  console.log(user)
+  const title = "Welcome back " + user.username
 
 
   return (
