@@ -55,17 +55,17 @@ export default function InputDialog({ onConfirm, onCancel }) {
           />
         </div>
         <div className="flex justify-end">
-          <button
-            onClick={handleCancel}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded mr-2"
-          >
-            Cancel
-          </button>
-          <button
+        <button
             onClick={handleConfirm}
             className={styles.button}
           >
             Confirm
+          </button>
+          <button
+            onClick={handleCancel}
+            className="px-4 py-2 bg-gray-300 text-gray-700 rounded ml-9"
+          >
+            Cancel
           </button>
         </div>
       </div>

@@ -4,7 +4,7 @@ import Context from "../utils/context";
 import { useReducer, useEffect, useState, useContext } from "react";
 import { pages } from "../utils/pages";
 import { database } from "../utils/firebase";
-import Cookies from 'js-cookie'
+
 export default function Home() {
   const { state, dispatch } = useContext(Context);
   const [appVisible, setAppVisible] = useState(false);

@@ -44,7 +44,7 @@ export default function Layout({ children, title }) {
                         <li><Link href="/" className={styles.navigationLink}>Home</Link></li>
                         <li><Link href="about" className={styles.navigationLink}>About</Link></li>
                         <li><Link href="gallery" className={styles.navigationLink}>Gallery</Link></li>
-                            <li><Link href="contact" className={styles.navigationLink}>Contact</Link></li>
+                        <li><Link href="contact" className={styles.navigationLink}>Contact</Link></li>
                             
                         </ul>
                         <div className="flex justify-center">

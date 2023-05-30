@@ -11,5 +11,4 @@ export default async function handler(req, res) {
     else {
         console.log("FAIL")
     }
-    
 }
