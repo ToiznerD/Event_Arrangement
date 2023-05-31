@@ -12,7 +12,8 @@
     "next": "latest",
     "react": "18.2.0",
     "react-datepicker": "^4.11.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-draggable": "^4.4.5"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
