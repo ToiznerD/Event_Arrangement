@@ -5,12 +5,14 @@ import { styles } from '../utils/style';
 import Draggable from 'react-draggable';
 import Image from 'next/image';
 import roundTable from '../assets/roundTable.png';
+import RoundTableComponent from './roundTableComponent';
 
 export default function ManageTableSeats() {
     const { state, dispatch } = useContext(Context);
     const [selectedRow, setSelectedRow] = useState(null);
     const [guests, setGuests] = useState({guests: [], amount: 0});
     const [isDragging, setIsDragging] = useState(false);
+    const text1 = "Raz"
 
     useEffect(() => {
     
@@ -34,8 +36,8 @@ export default function ManageTableSeats() {
         fetchData()
     }, [])
 
-    const handleMouseDown = () => {
-        event.preventDefault();
+    const handleMouseDown = (event) => {
+        event.preventDefault()
         setIsDragging(true);
       };
       
@@ -45,20 +47,32 @@ export default function ManageTableSeats() {
 
 
     const handleRowClick = (rowId) => {
-        setSelectedRow(rowId);
+        if(rowId === selectedRow)
+            setSelectedRow(0)
+        else
+            setSelectedRow(rowId);
         console.log(rowId)
     };
+
+    const addTable = () => {
+        return(
+            <Draggable onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} bounds="parent">
+                <div className="absolute">
+                    <Image className="cursor-pointer" src={roundTable}/>
+                </div>
+            </Draggable>
+        )
+    }
     
     return(
         <Layout >
-            <div className="flex justify-between w-[1500px] h-[500px] relative">
-                <Draggable onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} bounds="parent">
-                    <div className="absolute" style={{ marginRight: '16px' }}>
-                        <Image className="cursor-pointer" src={roundTable}/>
-                    </div>
-                </Draggable>
-                <div className="ml-auto w-[500px] h-[full] overflow-y-auto">
-                    <table className="w-full border-gray-500 border-4">
+            <div className="flex justify-between relative">
+                <div className="min-w-[600px] max-w-[1500px]">
+                    <RoundTableComponent text="RAZ"/>
+                </div>
+                <button onClick={() => addTable()}>Add Table</button>
+                <div className="w-[500px] h-[400px] overflow-y-auto">
+                    <table className="w-full select-none">
                         <thead>
                             <tr>
                                 <th className="py-2">Name</th>
