@@ -37,7 +37,7 @@ export default function Layout({ children, title }) {
         <Head>
             <title>{title}</title>
         </Head>
-        <div>
+        <div className="mt-[200px]">
             <div className="border-2 border-white rounded-3xl shadow-lg shadow-slate-500 min-h-[300px] mx-auto min-w-[500px] overflow-hidden">
                 <nav className={styles.navigationBar}>
                     <ul className="flex space-x-5">
