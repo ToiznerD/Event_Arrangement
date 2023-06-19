@@ -6,7 +6,7 @@ export default function Home() {
     const { state, dispatch } = useContext(Context)
 
     return(
-        <Layout title="Event Management">
+        <Layout title="Event Management" width="500">
               <div>
                 This is Home page
               </div>

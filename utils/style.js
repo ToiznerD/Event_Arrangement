@@ -12,7 +12,7 @@ export const styles = {
     "bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded",
   buttonReg:
     "bg-yellow-400 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded ml-auto",
-  navigationLink: "text-white hover:bg-navy-200",
+  navigationLink: "text-white hover:bg-navy-200 cursor-pointer",
   navigationBar:
     "flex items-center justify-between bg-gray-800 p-4 rounded-t-lg",
   normalRow: "py-2 text-center cursor-pointer bg-gray-300 hover:bg-gray-200",

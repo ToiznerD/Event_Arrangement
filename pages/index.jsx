@@ -24,8 +24,13 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div
+      className={`app-container transition-opacity duration-1500 ${
+        appVisible ? "opacity-100" : "opacity-0"
+      }`}
+    >
       {pages[state.view]}
-    </>
+    
+    </div>
   );
 }

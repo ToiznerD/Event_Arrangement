@@ -15,7 +15,7 @@ export default function Dashboard() {
 
 
   return (
-    <Layout title={title}>
+    <Layout title={title} w={500}>
       <div className="mt-4 mb-2 flex flex-col items-center">
           <div className={styles.label + "text-center"}>Event date: 12/5/23</div>
           <div className={styles.label + "text-center"}>Guests Amount: 275</div>
