@@ -49,15 +49,18 @@ export default function ManageTableSeats() {
         console.log(rowId)
     };
     
-    return(
-        <Layout >
-            <div className="flex justify-between w-[1500px] h-[500px] relative">
+    return (
+        <Layout>
+            <div className="flex justify-between relative">
+                <div className="min-w-[600px] max-w-[1500px]">
                 <Draggable onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} bounds="parent">
-                    <div className="absolute" style={{ marginRight: '16px' }}>
-                        <Image className="cursor-pointer" src={roundTable}/>
+                    <div className="absolute" >
+                                <Image className="cursor-pointer" src={roundTable} alt="table"></Image>
+                                
                     </div>
-                </Draggable>
-                <div className="ml-auto w-[500px] h-[full] overflow-y-auto">
+                    </Draggable>
+                    </div>
+                <div className=" w-[500px] h-[full] overflow-y-auto">
                     <table className="w-full border-gray-500 border-4">
                         <thead>
                             <tr>
@@ -82,7 +85,7 @@ export default function ManageTableSeats() {
                     </table>
                 </div>
             </div>
-        </Layout>
+            </Layout>
     )
 
 }

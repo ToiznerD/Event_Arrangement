@@ -12,11 +12,34 @@ export default function Register() {
     const cpasswordRef = useRef()
     const emailRef = useRef()
     const today = new Date();
+    const dateRef = useRef()
 
     const [selectedDate, setSelectedDate] = useState(null)
 
-    function handleSubmit() {
+    async function handleSubmit(e) {
+        e.preventDefault()
+        let username = nameRef.current.value
+        let password = passwordRef.current.value
+        let cpassword = cpasswordRef.current.value
+        let email = emailRef.current.value
+        let eventDate = selectedDate; 
+    
+        try {
+            const response = await fetch('/api/register', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username: username, password: password, email: email, eventDate: eventDate})
+            })
+            let res = await response.json()
+            
+            alert(res.message)
+            
 
+        } catch (error) {
+            console.error(error);
+        }
     }
     return (
         <Layout title="Register">
@@ -31,7 +54,7 @@ export default function Register() {
                     <div className={styles.label}>Email</div>
                     <div><input type="text" className={styles.textInput} required ref={emailRef} /></div>
                     <div className={styles.label}>Event Date</div>
-                    <div><DatePicker selected={selectedDate} minDate={today} onChange={(date) => setSelectedDate(date) } /></div>
+                    <div><DatePicker selected={selectedDate} minDate={today} onChange={(date) => setSelectedDate(date)} ref={dateRef} /></div>
                     <div className="mt-4 mb-2 flex justify-between items-center">
                         <button type="submit" className={styles.button}>Register</button>
                     </div>

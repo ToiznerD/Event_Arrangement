@@ -1,5 +1,6 @@
 export const styles = {
-  mainLayout: "border-2 border-white rounded-3xl shadow-lg shadow-slate-500 min-h-[300px] mx-auto min-w-[500px] overflow-hidden",
+  mainLayout:
+    "border-2 border-white rounded-3xl shadow-lg shadow-slate-500 min-h-[300px] mx-auto min-w-[500px] overflow-hidden",
   subTitle: "text-3xl font-bold text-gray-700 flex justify-center",
   label: "text-gray-600 mt-2 text-2xl font-bold",
   simplelabel: "text-gray-600 my-4 text-2xl",
@@ -11,10 +12,10 @@ export const styles = {
     "bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded",
   buttonReg:
     "bg-yellow-400 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded ml-auto",
-  navigationLink: "text-white hover:font-bold",
+  navigationLink: "text-white hover:bg-navy-200",
   navigationBar:
     "flex items-center justify-between bg-gray-800 p-4 rounded-t-lg",
   normalRow: "py-2 text-center cursor-pointer bg-gray-300 hover:bg-gray-200",
   selectedRow: "py-2 text-center cursor-pointer bg-gray-400 font-bold",
-  td: "py-2 text-center cursor-pointer my-4 text-2xl"
+  td: "py-2 text-center cursor-pointer my-4 text-2xl",
 };
