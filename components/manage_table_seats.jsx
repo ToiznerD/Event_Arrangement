@@ -5,12 +5,14 @@ import { styles } from '../utils/style';
 import Draggable from 'react-draggable';
 import Image from 'next/image';
 import roundTable from '../assets/roundTable.png';
+import RoundTableComponent from './roundTableComponent';
 
 export default function ManageTableSeats() {
     const { state, dispatch } = useContext(Context);
     const [selectedRow, setSelectedRow] = useState(null);
     const [guests, setGuests] = useState({guests: [], amount: 0});
     const [isDragging, setIsDragging] = useState(false);
+    const text1 = "Raz"
 
     useEffect(() => {
     
@@ -34,8 +36,8 @@ export default function ManageTableSeats() {
         fetchData()
     }, [])
 
-    const handleMouseDown = () => {
-        event.preventDefault();
+    const handleMouseDown = (event) => {
+        event.preventDefault()
         setIsDragging(true);
       };
       
@@ -45,9 +47,22 @@ export default function ManageTableSeats() {
 
 
     const handleRowClick = (rowId) => {
-        setSelectedRow(rowId);
+        if(rowId === selectedRow)
+            setSelectedRow(0)
+        else
+            setSelectedRow(rowId);
         console.log(rowId)
     };
+
+    const addTable = () => {
+        return(
+            <Draggable onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} bounds="parent">
+                <div className="absolute">
+                    <Image className="cursor-pointer" src={roundTable}/>
+                </div>
+            </Draggable>
+        )
+    }
     
     return (
         <Layout>
