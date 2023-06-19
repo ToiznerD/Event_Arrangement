@@ -64,15 +64,19 @@ export default function ManageTableSeats() {
         )
     }
     
-    return(
-        <Layout >
+    return (
+        <Layout>
             <div className="flex justify-between relative">
                 <div className="min-w-[600px] max-w-[1500px]">
-                    <RoundTableComponent text="RAZ"/>
-                </div>
-                <button onClick={() => addTable()}>Add Table</button>
-                <div className="w-[500px] h-[400px] overflow-y-auto">
-                    <table className="w-full select-none">
+                <Draggable onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} bounds="parent">
+                    <div className="absolute" >
+                                <Image className="cursor-pointer" src={roundTable} alt="table"></Image>
+                                
+                    </div>
+                    </Draggable>
+                    </div>
+                <div className=" w-[500px] h-[full] overflow-y-auto">
+                    <table className="w-full border-gray-500 border-4">
                         <thead>
                             <tr>
                                 <th className="py-2">Name</th>
@@ -96,7 +100,7 @@ export default function ManageTableSeats() {
                     </table>
                 </div>
             </div>
-        </Layout>
+            </Layout>
     )
 
 }

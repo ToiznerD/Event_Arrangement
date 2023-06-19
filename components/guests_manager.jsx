@@ -111,10 +111,10 @@ export default function GuestsManager({data}) {
 
   return (
     <Layout title={title}>
-      <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 max-h-[300px] scrollbar-track-gray-100 w-[600px]">
+      <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 max-h-[300px] scrollbar-track-gray-100 md:w-[600px]">
         <table>
           <thead>
-            <tr className={styles.label}>
+            <tr className="text-gray-600 mt-2 md:text-2xl font-bold">
               <td className="px-4">Guest Name</td>
               <td className="px-4">Amount</td>
               <td className="px-4">Category</td>
@@ -126,7 +126,7 @@ export default function GuestsManager({data}) {
               if (guest === null)
                 return null
               return (
-                <tr className={styles.simplelabel} key={index}>
+                <tr className={"text-gray-600 my-4 md:text-2xl"} key={index}>
                   <td className="px-4">{guest.name}</td>
                   <td className="px-4 my-1 flex items-center">
                     {editingGuestIndex === index ? (
@@ -141,9 +141,9 @@ export default function GuestsManager({data}) {
                       </>
                     )}
                   </td>
-                  <td className="px-4">{guest.category}</td>
-                  <td className="px-4">
-                    <Image alt="" title="Delete guest" src={removeImg} className="cursor-pointer ml-5" onClick={() => deleteGuest(index)} width={15} height={15} />
+                  <td className="px-4 whitespace-normal max-w-30 break-all">{guest.category}</td>
+                  <td className="">
+                    <Image alt="" title="Delete guest" src={removeImg} className="cursor-pointer md:w-4 sm:min-w-6" onClick={() => deleteGuest(index)} />
                   </td>
                 </tr>
               )
