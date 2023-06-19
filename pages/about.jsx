@@ -1,4 +1,3 @@
-import styles from "../styles/Home.module.css";
 import Context from "../utils/context";
 import { useEffect, useState, useContext } from "react";
 import { pages } from "../utils/pages";

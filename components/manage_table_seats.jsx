@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import Context from "../utils/context";
-import Dashlayout from "./dashlayout";
+import Layout from "./layout";
 import { styles } from '../utils/style';
 import Draggable from 'react-draggable';
 import Image from 'next/image';
@@ -65,7 +65,7 @@ export default function ManageTableSeats() {
     }
     
     return (
-        <Dashlayout>
+        <Layout w="100vw">
             <div className="flex justify-between relative">
                 <div className="w-screen">
                 <RoundTableComponent />
@@ -95,7 +95,7 @@ export default function ManageTableSeats() {
                     </table>
                 </div>
             </div>
-            </Dashlayout>
+            </Layout>
     )
 
 }

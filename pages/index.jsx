@@ -1,7 +1,6 @@
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
+
 import Context from "../utils/context";
-import { useReducer, useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { pages } from "../utils/pages";
 import { database } from "../utils/firebase";
 
