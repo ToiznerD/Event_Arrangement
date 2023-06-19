@@ -67,14 +67,9 @@ export default function ManageTableSeats() {
     return (
         <Layout w={800}>
             <div className="flex justify-between relative">
-                <div>
-                <Draggable onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} bounds="parent">
-                    <div className="absolute" >
-                                <Image className="cursor-pointer" src={roundTable} alt="table"></Image>
-                                
-                    </div>
-                    </Draggable>
-                    </div>
+                <div className="w-screen">
+                <RoundTableComponent />
+                </div>
                 <div className=" w-[500px] h-[full] overflow-y-auto">
                     <table className="w-full border-gray-500 border-4">
                         <thead>

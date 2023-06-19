@@ -1,5 +1,5 @@
 import { useState,useRef } from "react";
-import roundTable from '../assets/roundTable.png';
+import  roundTable  from '../assets/roundTable.png';
 import Image from 'next/image';
 import Draggable from 'react-draggable';
 
@@ -30,13 +30,11 @@ export default function roundTableComponent (props) {
       <div className="h-full">
           <Draggable onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} bounds="parent">
               <div className="absolute flex items-center justify-center text-base font-bold">
-             <div className="relative">
-                {refImage && refImage.current && <p className={"absolute left-[" + refImage.current.offsetWidth + "px] top-[100px]"}>raz</p>}
-                    <Image className="cursor-pointer" src={roundTable} ref={refImage}/>
-                    {refImage && refImage.current &&
-                    <div className={"absolute block text-center left-0 top-0 w-[" + refImage.current.offsetWidth + "px] h-[" + refImage.current.    offsetHeight + "px]"}>center
-                    </div>}
-                    
+            <div className="relative">
+              <Image className="cursor-pointer" src={roundTable} ref={refImage} alt="yaniv" />
+                  <div className="absolute mx-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black text-lg font-bold">
+                    10/15
+                  </div>
             </div>
         </div>
             

@@ -40,14 +40,15 @@ export default function Layout({ children, title, w }) {
         router.push('/')
     }
 
+    const maxWidth = w > 0 ? `${w}px` : '500px';
+
     return (
         <>
         <Head>
             <title>{title}</title>
         </Head>
-        <div className={`border-2 border-white rounded-3xl shadow-lg shadow-slate-500 min-h-[300px] w-screen max-w-[500px] md:w-${w > 0 ? w : 500} md:max-w-[1500px] overflow-hidden mx-1`}>
+            <div className={`border-2 border-white rounded-3xl shadow-lg shadow-slate-500 min-h-[300px] w-screen max-w-[1000px] md:w-[${maxWidth}] md:max-w-[1500px] overflow-hidden mx-1`}>
                 <nav className={styles.navigationBar}>
-                    {console.log(w)}
                     <div className="flex justify-between items-center">
                         <div className="flex space-x-5">
                                 <ul className={`flex ${isMenuOpen ? 'flex-col' : 'space-x-5'}`}>
