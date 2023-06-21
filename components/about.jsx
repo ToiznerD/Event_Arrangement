@@ -8,7 +8,7 @@ export default function About() {
 
     return(
       <Layout title="Event Management" w="50vw">
-        <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 max-h-[500px]">
+        <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 max-h-[600px] p-3">
           <div className={styles.Title}>About</div>
           <div className={styles.subTitle}>Table layout diagram</div>
             <div className={styles.content}>

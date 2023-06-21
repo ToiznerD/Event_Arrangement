@@ -11,7 +11,7 @@ export const styles = {
   buttonLogin:
     "bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded w-[250px] h-[60px] m-5",
   button:
-    "bg-gradient-to-r  from-red-400 to-red-300  hover:from-red-500 hover:to-cyan-500 text-white font-bold py-2 px-4 rounded w-[200px]",
+    "bg-gradient-to-r  from-red-400 to-red-300  hover:from-red-500 hover:to-red-400 text-white font-bold py-2 px-4 rounded w-[200px]",
   buttonReg:
     "bg-gradient-to-r  from-red-400 to-red-300  hover:from-red-500 hover:to-red-500 text-white font-bold py-2 px-4 rounded w-[200px] mx-auto",
   navigationLink:
