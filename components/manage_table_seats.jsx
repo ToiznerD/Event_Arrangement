@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import Dashlayout from "./dashlayout";
+import { useContext, useState, useEffect } from "react";
+import Context from "../utils/context";
+import Layout from "./layout";
 import { styles } from '../utils/style';
 import RoundTableComponent from './roundTableComponent';
 
@@ -55,7 +56,7 @@ export default function ManageTableSeats() {
     };
 
     return (
-        <Dashlayout>
+        <Layout w="100vw">
             <div className="flex justify-between relative">
                 <div className="w-screen">
                 {Array.isArray(tables) && tables.map((table, index) => {
@@ -93,7 +94,7 @@ export default function ManageTableSeats() {
                     </table>
                 </div>
             </div>
-            </Dashlayout>
+            </Layout>
     )
 
 }

@@ -51,19 +51,19 @@ export default function Dashlayout({ children, title }) {
                     <div className="flex justify-between items-center">
                         <div className="flex space-x-5">
                                 <ul className={`flex ${isMenuOpen ? 'flex-col' : 'space-x-5'}`}>
-                                <div className={`${styles.navigationLink} cursor-pointer md:hidden`} onClick={() => setMenuOpen(!isMenuOpen)}>
+                                <div className="cursor-pointer md:hidden" onClick={() => setMenuOpen(!isMenuOpen)}>
                                     <Image src={hamburger} width={30} height={30} alt="burger"></Image>
                                  </div>
-                                <li className={`md:block ${isMenuOpen ? 'block' : 'hidden'}  menu-item relative hover:bg-gray-400 transition duration-500 rounded-md`}>
+                                <li className={`md:block ${isMenuOpen ? 'block' : 'hidden'}  relative hover:bg-gray-400 transition duration-500 rounded-md`}>
                                     <Link href="/" className="text-white text-lg">Home</Link>
                                 </li>
-                                <li className={`md:block ${isMenuOpen ? 'block' : 'hidden'}  menu-item relative hover:bg-gray-400 transition duration-500 rounded-md`}>
+                                <li className={`md:block ${isMenuOpen ? 'block' : 'hidden'}  relative hover:bg-gray-400 transition duration-500 rounded-md`}>
                                     <Link href="about" className="text-white text-lg">About</Link>
                                 </li>
-                                <li className={`md:block ${isMenuOpen ? 'block' : 'hidden'}  menu-item relative hover:bg-gray-400 transition duration-500 rounded-md`}>
+                                <li className={`md:block ${isMenuOpen ? 'block' : 'hidden'}  relative hover:bg-gray-400 transition duration-500 rounded-md`}>
                                     <Link href="gallery" className="text-white text-lg">Gallery</Link>
                                 </li>
-                                <li className={`md:block ${isMenuOpen ? 'block' : 'hidden'}  menu-item relative hover:bg-gray-400 transition duration-500 rounded-md`}>
+                                <li className={`md:block ${isMenuOpen ? 'block' : 'hidden'}  relative hover:bg-gray-400 transition duration-500 rounded-md`}>
                                     <Link href="contact" className="text-white text-lg">Contact</Link>
                                 </li>
                                 <li className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'} `}>
@@ -74,10 +74,10 @@ export default function Dashlayout({ children, title }) {
                                 </li>
                                     
                             </ul>
-                            <div className="md:block hidden ">
+                            <div className="md:block hidden justify-end">
                                     <div className="relative inline-flex">
                                         <div onClick={handleClick} className="text-white text-lg relative hover:bg-gray-400 transition duration-500 rounded-md cursor-pointer">{isUser ? 'My Account' : 'Login'}</div>
-                                        {isUser && <Dropdown className="absolute mt-1 left-full"/>}
+                                        {isUser && <Dropdown className="absolute mt-1 left-0"/>}
                                     </div>
                             </div>
                             
