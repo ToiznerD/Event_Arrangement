@@ -7,7 +7,7 @@ export default function Home() {
 
     return(
       <Layout title="Event Management">
-          <div className={styles.Title}>2Seat</div>
+          <div className={styles.Title}>SeatWise</div>
           <div className={styles.content}>
           Use a wedding seating tool to plan where your guests are seated. Super easy! 
         </div>
