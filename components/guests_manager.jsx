@@ -111,10 +111,10 @@ export default function GuestsManager({data}) {
 
   return (
     <Layout title={title}>
-      <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 max-h-[400px] scrollbar-track-gray-100 mt-5">
+      <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 max-h-[300px] scrollbar-track-gray-100 md:w-[600px]">
         <table>
           <thead>
-            <tr className={styles.topRow}>
+            <tr className="text-gray-600 mt-2 md:text-2xl font-bold">
               <td className="px-4">Guest Name</td>
               <td className="px-4">Amount</td>
               <td className="px-4">Category</td>
@@ -126,7 +126,7 @@ export default function GuestsManager({data}) {
               if (guest === null)
                 return null
               return (
-                <tr className={styles.tr} key={index}>
+                <tr className={"text-gray-600 my-4 md:text-2xl"} key={index}>
                   <td className="px-4">{guest.name}</td>
                   <td className="px-4 my-1 flex items-center">
                     {editingGuestIndex === index ? (
@@ -151,10 +151,10 @@ export default function GuestsManager({data}) {
             </tbody>
         </table>
       </div>
-      <div className="flex flex-col justify-center items-center">
-        <div className={styles.subTitle}>Total Amount: {guests.amount}</div>
-        <button onClick={handleOpenDialog} className={styles.button}>Add Guest</button>
-        <button onClick={saveChanges} className={"bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 mt-2 rounded w-[200px]"}>Save Changes</button>
+      <div className="flex flex-col justify-center">
+        <div className={styles.subTitle + " mt-5"}>Total Amount: {guests.amount}</div>
+        <button onClick={handleOpenDialog} className={"bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded" + " w-[200px] mx-auto text-center"}>Add Guest</button>
+        <button onClick={saveChanges} className={"bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 mt-2 rounded" + " w-[200px] mx-auto text-center"}>Save Changes</button>
       </div>
       {isDialogOpen && <InputDialog onConfirm={handleConfirmDialog} onCancel={handleCancelDialog} />}
       

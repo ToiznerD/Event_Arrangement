@@ -13,9 +13,15 @@ const Dropdown = () => {
 
   const logout = (e) => {
     e.preventDefault()
+    const currentPath = router.pathname;
     localStorage.removeItem('user')
-    dispatch({type: "SET_VIEW", param: "myaccount"})
-    router.push('/')
+    if (currentPath === '/myaccount')
+      dispatch({ type: "SET_VIEW", param: "myaccount" })
+      if (currentPath === '/') {
+        window.location.reload();
+      } else {
+        router.push('/');
+      }
   }
 
   return (

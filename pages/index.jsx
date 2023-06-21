@@ -4,9 +4,14 @@ import { useEffect, useState, useContext } from "react";
 import { pages } from "../utils/pages";
 import { database } from "../utils/firebase";
 
+export const dynamic = 'auto'
+export const revalidate = 3
+
 export default function Home() {
   const { state, dispatch } = useContext(Context);
   const [appVisible, setAppVisible] = useState(false);
+
+
   useEffect(() => {
     dispatch({ type: "SET_VIEW", param: "home" });
     setAppVisible(true);
