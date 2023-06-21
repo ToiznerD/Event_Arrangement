@@ -38,14 +38,9 @@ export default function Layout({ children, title, w}) {
         console.log("YOOHOO")
         localStorage.removeItem('user');
         const currentPath = router.pathname;
-        
-        // if (currentPath === '/myaccount') {
-        //   dispatch({ type: "SET_VIEW", param: "myaccount" });
-        // }
         console.log(currentPath)
         if (currentPath !== '/')
             router.push('/');
-        
       };
 
     return (
@@ -53,8 +48,7 @@ export default function Layout({ children, title, w}) {
         <Head>
             <title>{title}</title>
             </Head>
-            {/* <div className={state.view === 'manage_table_seats' ? styles.editTablesLayout : styles.layout}> */}
-                <div className="border-2 border-white rounded-3xl shadow-lg shadow-slate-500 min-h-[300px] w-screen md:w-[600px] mx-auto overflow-hidden" style={{width: w}}>
+                <div className="border-2 border-white rounded-3xl shadow-lg shadow-slate-500 min-h-[300px] w-screen  md:w-[600px] mx-auto overflow-hidden" style={{width: w}}>
                 <nav className="flex items-center justify-between bg-gradient-to-r from-red-400 to-red-300 p-4 rounded-t-lg">
                     <div className="flex justify-between items-center">
                         <div className="flex space-x-5">
