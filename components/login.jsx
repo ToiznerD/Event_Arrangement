@@ -47,9 +47,9 @@ const handleSubmit = async (e) => {
              
           <form onSubmit={handleSubmit}>
             <div className="mt-4 flex justify-center items-center flex-col">
-                <div className={styles.label}>Username</div>
+                <div className={styles.subTitle}>Username</div>
                 <input type="text" className={styles.textInput} required ref={nameRef} />
-                <div className={styles.label}>Password</div>
+                <div className={styles.subTitle}>Password</div>
                 <input type="password" className={styles.textInput} required ref={passwordRef} />
                 
                 <button type="submit" className={styles.buttonLogin}>Login</button>

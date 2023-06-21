@@ -13,9 +13,15 @@ const Dropdown = () => {
 
   const logout = (e) => {
     e.preventDefault()
+    const currentPath = router.pathname;
     localStorage.removeItem('user')
-    dispatch({type: "SET_VIEW", param: "myaccount"})
-    router.push('/')
+    if (currentPath === '/myaccount')
+      dispatch({ type: "SET_VIEW", param: "myaccount" })
+      if (currentPath === '/') {
+        window.location.reload();
+      } else {
+        router.push('/');
+      }
   }
 
   return (
@@ -28,7 +34,7 @@ const Dropdown = () => {
       </button>
       {isOpen && (
         <div className="absolute text-white rounded-md shadow-lg">
-                  <div className="text-white hover:font-bold cursor-pointer bg-gray-800 rounded-b-lg p-2" onClick={(e)=>logout(e)}>
+                  <div className="text-white hover:font-bold cursor-pointer bg-pink-500 rounded-b-lg p-2" onClick={(e)=>logout(e)}>
                             Logout
                   </div>
         </div>

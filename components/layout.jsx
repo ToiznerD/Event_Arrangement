@@ -9,14 +9,14 @@ import Error from './error'
 import Image from 'next/image'
 import hamburger from '../assets/burger-menu.png'
 
-export default function Layout({ children, title }) {
+export default function Layout({ children, title, w}) {
     const { state, dispatch } = useContext(Context)
     const router = useRouter()
     const [isUser, setIsUser] = useState(false)
     const [isMenuOpen, setMenuOpen] = useState(false);
-
     useEffect(() => {
         setIsUser(localStorage.getItem("user") !== null)
+        
     },[])
 
     useEffect(() => {
@@ -35,54 +35,61 @@ export default function Layout({ children, title }) {
     }
     
     const logout = () => {
-        localStorage.removeItem('user')
-        dispatch({ type: "SET_VIEW", param: "myaccount" })
-        router.push('/')
-    }
-
+        console.log("YOOHOO")
+        localStorage.removeItem('user');
+        const currentPath = router.pathname;
+        
+        // if (currentPath === '/myaccount') {
+        //   dispatch({ type: "SET_VIEW", param: "myaccount" });
+        // }
+        console.log(currentPath)
+        if (currentPath !== '/')
+            router.push('/');
+        
+      };
 
     return (
         <>
         <Head>
             <title>{title}</title>
             </Head>
-            <div className="border-2 border-white rounded-3xl shadow-lg shadow-slate-500 min-h-[300px] w-screen max-w-[1000px] md:w-[500px] overflow-hidden mx-1">
-                <nav className="flex items-center justify-between bg-gray-800 p-4 rounded-t-lg">
+            {/* <div className={state.view === 'manage_table_seats' ? styles.editTablesLayout : styles.layout}> */}
+                <div className="border-2 border-white rounded-3xl shadow-lg shadow-slate-500 min-h-[300px] w-screen md:w-[600px] mx-auto overflow-hidden" style={{width: w}}>
+                <nav className="flex items-center justify-between bg-gradient-to-r from-red-400 to-red-300 p-4 rounded-t-lg">
                     <div className="flex justify-between items-center">
                         <div className="flex space-x-5">
                                 <ul className={`flex ${isMenuOpen ? 'flex-col' : 'space-x-5'}`}>
-                                <div className={`${styles.navigationLink} cursor-pointer md:hidden`} onClick={() => setMenuOpen(!isMenuOpen)}>
+                                <div className="cursor-pointer md:hidden" onClick={() => setMenuOpen(!isMenuOpen)}>
                                     <Image src={hamburger} width={30} height={30} alt="burger"></Image>
                                  </div>
-                                <li className={`md:block ${isMenuOpen ? 'block' : 'hidden'}  menu-item relative hover:bg-gray-400 transition duration-500 rounded-md`}>
-                                    <Link href="/" className="text-white text-lg">Home</Link>
+                                <li className={isMenuOpen ? 'block' : 'md:block hidden'}>
+                                    <Link href="/" className={styles.navigationLink}>Home</Link>
                                 </li>
-                                <li className={`md:block ${isMenuOpen ? 'block' : 'hidden'}  menu-item relative hover:bg-gray-400 transition duration-500 rounded-md`}>
-                                    <Link href="about" className="text-white text-lg">About</Link>
+                                <li className={isMenuOpen ? 'block' : 'md:block hidden'}>
+                                    <Link href="about" className={styles.navigationLink}>About</Link>
                                 </li>
-                                <li className={`md:block ${isMenuOpen ? 'block' : 'hidden'}  menu-item relative hover:bg-gray-400 transition duration-500 rounded-md`}>
-                                    <Link href="gallery" className="text-white text-lg">Gallery</Link>
+                                <li className={isMenuOpen ? 'block' : 'md:block hidden'}>
+                                    <Link href="gallery" className={styles.navigationLink}>Gallery</Link>
                                 </li>
-                                <li className={`md:block ${isMenuOpen ? 'block' : 'hidden'}  menu-item relative hover:bg-gray-400 transition duration-500 rounded-md`}>
-                                    <Link href="contact" className="text-white text-lg">Contact</Link>
+                                <li className={isMenuOpen ? 'block' : 'md:block hidden'}>
+                                    <Link href="contact" className={styles.navigationLink}>Contact</Link>
                                 </li>
-                                <li className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'} `}>
-                                    <div onClick={handleClick} className="text-white text-lg ">{isUser ? 'My Account' : 'Login'}</div>
+                                <li className={isMenuOpen ? 'block md:hidden' : 'hidden'}>
+                                    <div onClick={handleClick} className={styles.navigationLink}>{isUser ? 'My Account' : 'Login'}</div>
                                 </li>
-                                    <li className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
+                                    <li className={isMenuOpen ? 'block md:hidden' : 'hidden'}>
                                         {isUser && <span onClick={() => logout()} className="text-white text-lg">Logout</span>}
                                 </li>
-                                    
                             </ul>
-                            <div className="md:block hidden ">
-                                    <div className="relative inline-flex">
-                                        <div onClick={handleClick} className="text-white text-lg relative hover:bg-gray-400 transition duration-500 rounded-md cursor-pointer">{isUser ? 'My Account' : 'Login'}</div>
-                                        {isUser && <Dropdown className="absolute mt-1 left-full"/>}
-                                    </div>
-                            </div>
-                            
+
                         </div>
                     </div>
+                    <div id="yaniv" className="md:block hidden justify-end">
+                        <div className="relative inline-flex">
+                            <div onClick={handleClick} className={styles.navigationLink}>{isUser ? 'My Account' : 'Login'}</div>
+                            {isUser && <Dropdown className="absolute mt-1 left-full"/>}
+                        </div>
+                   </div>
                 </nav>
                 <div className="px-1">
                     {children}
