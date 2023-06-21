@@ -73,6 +73,7 @@ export default function ManageTableSeats() {
                                 <th className="py-2">Name</th>
                                 <th className="py-2">Amount</th>
                                 <th className="py-2">Category</th>
+                                <th className="py-2">Table</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,6 +85,7 @@ export default function ManageTableSeats() {
                                 <td className={styles.td}>{guest.name}</td>
                                 <td className={styles.td}>{guest.amount}</td>
                                 <td className={styles.td}>{guest.category}</td>
+                                <td className={styles.td}>0</td>
                             </tr>
                             )
                         })}
