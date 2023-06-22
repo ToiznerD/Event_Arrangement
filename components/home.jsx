@@ -9,9 +9,8 @@ export default function Home() {
     const { state, dispatch } = useContext(Context)
 
     return(
-      <Layout title="Event Management">
+      <Layout title="Seat Wise">
          <Image src={table} width={300} height={150} className="mx-auto"/>
-        {/*<div className={styles.Title}>SeatWise</div>*/}
           <div className={styles.content}>
           Use a wedding seating tool to plan where your guests are seated. Super easy! 
         </div>
