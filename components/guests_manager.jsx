@@ -114,7 +114,7 @@ export default function GuestsManager({data}) {
       <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 max-h-[500px] scrollbar-track-gray-100">
         <table>
           <thead>
-            <tr className="text-gray-600 mt-2 md:text-2xl font-bold">
+            <tr className="text-gray-600 m-5 md:text-2xl font-bold">
               <td className="px-4">Guest Name</td>
               <td className="px-4">Amount</td>
               <td className="px-4">Category</td>
@@ -155,6 +155,7 @@ export default function GuestsManager({data}) {
         <div className={styles.subTitle + " mt-5 mx-auto"}>Total Amount: {guests.amount}</div>
         <button onClick={handleOpenDialog} className={styles.button + " mx-auto"}>Add Guest</button>
         <button onClick={saveChanges} className={"bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 mt-2 rounded" + " w-[200px] mx-auto text-center"}>Save Changes</button>
+
       </div>
       {isDialogOpen && <InputDialog onConfirm={handleConfirmDialog} onCancel={handleCancelDialog} />}
       
