@@ -40,7 +40,8 @@ export default function ManageTableSeats() {
     
           if (response.ok) {
             let res = await response.json();
-            setTables(res)
+              setTables(res)
+              console.log(res)
           }
         }
         fetchDataTables()
@@ -54,15 +55,25 @@ export default function ManageTableSeats() {
         console.log(rowId)
     };
 
+    const handleTableCoordinatesUpdate = (index, coordinates) => {
+        const updatedTables = [...tables];
+        updatedTables[index].x = coordinates.x;
+        updatedTables[index].y = coordinates.y;
+        console.log('manage coordinates update', coordinates);
+        setTables(updatedTables);
+      };
+
     return (
         <Layout w="100vw">
             <div className="flex justify-between relative">
-                <div className="w-screen">
+                <div className="w-[100%]">
                 {Array.isArray(tables) && tables.map((table, index) => {
                     if(table === null)
                         return null
                     return(
-                        <RoundTableComponent key={index} current_seats={table.current_seats} guests_in_table={table.guests_in_table} max_seats={table.max_seats} subject={table.subject} x={table.x} y={table.y} />
+                        <RoundTableComponent key={index} current_seats={table.current_seats} guests_in_table={table.guests_in_table} max_seats={table.max_seats} subject={table.subject} x={table.x} y={table.y} onUpdateCoordinates={(coordinates) =>
+                            handleTableCoordinatesUpdate(index, coordinates)
+                          }/>
                     )
                 })}
                 </div>
