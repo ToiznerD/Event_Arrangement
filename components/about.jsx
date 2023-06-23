@@ -7,7 +7,7 @@ export default function About() {
     const { state, dispatch } = useContext(Context)
 
     return(
-      <Layout title="Event Management" w="50vw">
+      <Layout title="Event Management" w="1000px">
         <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 max-h-[600px] p-3">
           <div className={styles.Title}>About</div>
           <div className={styles.subTitle}>Table layout diagram</div>

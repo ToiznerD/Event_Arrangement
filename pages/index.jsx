@@ -4,6 +4,7 @@ import { useEffect, useState, useContext } from "react";
 import { pages } from "../utils/pages";
 import { database } from "../utils/firebase";
 
+
 export const dynamic = 'auto'
 export const revalidate = 3
 
@@ -33,6 +34,7 @@ export default function Home() {
         appVisible ? "opacity-100" : "opacity-0"
       }`}
     >
+      
       {pages[state.view]}
     
     </div>
