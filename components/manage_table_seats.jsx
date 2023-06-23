@@ -1,13 +1,13 @@
 import { useRef, useState, useEffect } from "react";
-import Context from "../utils/context";
 import Layout from "./layout";
 import { styles } from '../utils/style';
 import RoundTableComponent from './roundTableComponent';
 
 export default function ManageTableSeats() {
-    const [selectedRow, setSelectedRow] = useState(null);
-    const [guests, setGuests] = useState({guests: [], amount: 0});
-    const [tables, setTables] = useState({tables: [], amount: 0});
+    const [selectedRow, setSelectedRow] = useState(null)
+    const [guests, setGuests] = useState({guests: [], amount: 0})
+    const [tables, setTables] = useState({tables: [], amount: 0})
+    const manage_table_seats = "Manage Tables Seats"
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'))
@@ -61,24 +61,35 @@ export default function ManageTableSeats() {
 
         if(selectedRow !== null && !tables[index].guests.includes(selectedRow)) {
             tables[index].guests.push(selectedRow)
-            tables[index].current_seats += 1
+            tables[index].current_seats += guests.guests[selectedRow].amount
             guests.guests[selectedRow].table = index
             setSelectedRow(null)
             console.log(tables[index].guests)
         }
     }
 
-   
+    const getGuests = (index) => {
+        const guestsInTable = []
+        
+        tables[index].guests.forEach(guestNum => {
+            const guest = {
+                guestName: guests.guests[guestNum].name,
+                guestAmount: guests.guests[guestNum].amount
+            }
+            guestsInTable.push(guest)
+        })
+        return guestsInTable
+    }
 
     return (
-        <Layout w="95vw">
+        <Layout w="95vw" title={manage_table_seats}>
             <div className="flex justify-between relative">
                 <div className="w-screen">
                 {Array.isArray(tables) && tables.map((table, index) => {
                     if(table === null)
                         return null
                     return(
-                        <RoundTableComponent addGuest={() => addGuest(index)} key={index} current_seats={table.current_seats} guests_in_table={table.guests_in_table} max_seats={table.max_seats} subject={table.subject}  />
+                        <RoundTableComponent guests={guests} guests_in_table ={tables[index].guests} getGuests={() => getGuests(index)} addGuest={() => addGuest(index)} index={index} key={index} current_seats={table.current_seats} max_seats={table.max_seats} subject={table.subject} />
                     )
                 })}
                 </div>
