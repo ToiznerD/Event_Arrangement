@@ -20,6 +20,7 @@ export const styles = {
   navigationBar:
     "flex items-center justify-between bg-gray-800 p-4 rounded-t-lg",
   normalRow: "py-2 text-center cursor-pointer bg-gray-300 hover:bg-gray-200",
+  normalRowDisabled: "py-2 text-center pointer-events-none opacity-50 text-grey-200 bg-gray-300",
   selectedRow: "py-2 text-center cursor-pointer bg-gray-400 font-bold",
   td: "py-2 text-center cursor-pointer my-4 text-2xl",
   topRow: "text-black mt-2 md:text-2xl font-bold",
