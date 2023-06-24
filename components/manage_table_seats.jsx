@@ -50,28 +50,30 @@ export default function ManageTableSeats() {
             setSelectedRow(null)
         else
             setSelectedRow(rowId);
-        console.log(rowId)
+        console.log(selectedRow)
     };
 
     const addGuest = (index) => {
-        if(tables[index].current_seats === tables[index].max_seats) {
-            console.log("Table is full")
-            return
-        }
+        if(selectedRow) {
+            if(tables[index].current_seats + guests.guests[selectedRow].amount > tables[index].max_seats) {
+                console.log("Table is full")
+                return
+            }
 
-        if(selectedRow !== null && !tables[index].guests.includes(selectedRow)) {
-            tables[index].guests.push(selectedRow)
-            tables[index].current_seats += guests.guests[selectedRow].amount
-            guests.guests[selectedRow].table = index
-            setSelectedRow(null)
-            console.log(tables[index].guests)
+            if(selectedRow !== null && !tables[index].guests.includes(selectedRow)) {
+                tables[index].guests.push(selectedRow)
+                tables[index].current_seats += guests.guests[selectedRow].amount
+                guests.guests[selectedRow].table = index
+                setSelectedRow(null)
+                console.log(tables[index].guests)
+            }
         }
     }
 
-    const getGuests = (index) => {
+    const getGuests = (tableNum) => {
         const guestsInTable = []
         
-        tables[index].guests.forEach(guestNum => {
+        tables[tableNum].guests.forEach(guestNum => {
             const guest = {
                 guestName: guests.guests[guestNum].name,
                 guestAmount: guests.guests[guestNum].amount
@@ -79,6 +81,12 @@ export default function ManageTableSeats() {
             guestsInTable.push(guest)
         })
         return guestsInTable
+    }
+
+    const removeGuest = (tableNum, guestID) => {
+        tables[tableNum].guests = tables[tableNum].guests.filter(element => element !== parseInt(guestID))
+        tables[tableNum].current_seats -= guests.guests[guestID].amount
+        console.log(tables[tableNum])
     }
 
     return (
@@ -89,7 +97,7 @@ export default function ManageTableSeats() {
                     if(table === null)
                         return null
                     return(
-                        <RoundTableComponent guests={guests} guests_in_table ={tables[index].guests} getGuests={() => getGuests(index)} addGuest={() => addGuest(index)} index={index} key={index} current_seats={table.current_seats} max_seats={table.max_seats} subject={table.subject} />
+                        <RoundTableComponent removeGuest = {removeGuest} guests={guests} addGuest={() => addGuest(index)} index={index} table={table}/>
                     )
                 })}
                 </div>

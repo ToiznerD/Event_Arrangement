@@ -5,7 +5,8 @@ import Draggable from 'react-draggable';
 import TableDialog from "./table_dialog";
 
 export default function roundTableComponent (props) {
-    const { current_seats, guests_in_table, max_seats, subject, x, y, addGuest, index, guests} = props
+    // const { current_seats, guests_in_table, max_seats, subject, x, y, addGuest, index, guests, removeGuest} = props
+    const { table, addGuest, index, guests, removeGuest} = props
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [guestsInTable, setGuests] = useState()
 
@@ -14,10 +15,6 @@ export default function roundTableComponent (props) {
       if (event.button === 0) {
         addGuest()
       }
-      // if (event.button === 2) {
-      //   event.preventDefault()
-      //   handleOpenDialog()
-      // }
     }
 
     const handleDoubleClick = () => {
@@ -33,7 +30,7 @@ export default function roundTableComponent (props) {
     const getGuests = () => {
       let guestsInTable = {}
       
-      guests_in_table.forEach(guestID => {
+      table.guests.forEach(guestID => {
           guestsInTable[guestID] = {
             guestName: guests.guests[guestID].name,
             guestAmount: guests.guests[guestID].amount
@@ -45,17 +42,17 @@ export default function roundTableComponent (props) {
     return (
       <div className="h-full">
         <Draggable onMouseDown={handleMouseDown}  bounds="parent">
-            <div onDoubleClick={handleDoubleClick} className="cursor-pointer absolute flex flex-col items-center justify-center font-bold my-1" style={{ left: `${x}px`, top: `${y}px` }}>
+            <div onDoubleClick={handleDoubleClick} className="cursor-pointer absolute flex flex-col items-center justify-center font-bold my-1" style={{ left: `${100}px`, top: `${100}px` }}>
                 <Image src={roundTable} alt="pic" style={{ width: '100px', height: '100px' }}/>
                 <div className="absolute mb-4">
-                  {current_seats}/{max_seats}
+                  {table.current_seats}/{table.max_seats}
                 </div>
                 <div className="absoulute mt-[-10px]">
-                {subject}({index})
+                {table.subject}({index})
                 </div>
             </div>
         </Draggable>
-        {isDialogOpen && <TableDialog guestsInTable = {guestsInTable} onCancel={handleCancelDialog} subject={subject} index={index} />}
+        {isDialogOpen && <TableDialog removeGuest={removeGuest} guestsInTable = {guestsInTable} onCancel={handleCancelDialog} subject={table.subject} index={index} />}
       </div>
     )
   }
