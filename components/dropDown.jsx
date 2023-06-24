@@ -34,7 +34,7 @@ const Dropdown = () => {
       </button>
       {isOpen && (
         <div className="absolute text-white rounded-md shadow-lg">
-                  <div className="text-white hover:font-bold cursor-pointer bg-red-300 rounded-b-lg p-2" onClick={(e)=>logout(e)}>
+                  <div className="text-white hover:font-bold cursor-pointer bg-blue-300 rounded-b-lg p-2" onClick={(e)=>logout(e)}>
                             Logout
                   </div>
         </div>

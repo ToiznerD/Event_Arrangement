@@ -8,6 +8,7 @@ import Head from 'next/head'
 import Error from './error'
 import Image from 'next/image'
 import hamburger from '../assets/burger-menu.png'
+import table from '../assets/roundTable.png'
 
 export default function Layout({ children, title, w}) {
     const { state, dispatch } = useContext(Context)
@@ -38,18 +39,33 @@ export default function Layout({ children, title, w}) {
         console.log("YOOHOO")
         localStorage.removeItem('user');
         const currentPath = router.pathname;
+        
+         if (currentPath === '/myaccount') {
+           dispatch({ type: "SET_VIEW", param: "myaccount" });
+         }
         console.log(currentPath)
-        if (currentPath !== '/')
+        if (currentPath === '/') {
+            window.location.reload();
+          } else {
             router.push('/');
+          }
+        
+    };
+    
+    const getWidthStyle = () => {
+        if (typeof window !== 'undefined' && window.innerWidth >= 845) {
+          return { width: w };
+        }
+        return {};
       };
 
     return (
         <>
         <Head>
-            <title>{title}</title>
+                <title>{title}</title>
             </Head>
-                <div className="border-2 border-white rounded-3xl shadow-lg shadow-slate-500 min-h-[300px] w-screen  md:w-[600px] mx-auto overflow-hidden" style={{width: w}}>
-                <nav className="flex items-center justify-between bg-gradient-to-r from-red-400 to-red-300 p-4 rounded-t-lg">
+            <div className="border-2 border-white rounded-3xl shadow-lg shadow-slate-500 md:min-h-[300px] w-screen md:w-[600px] mx-auto overflow-hidden" style={getWidthStyle()}>
+                <nav className="flex items-center justify-between bg-gradient-to-r from-blue-400 to-blue-300 p-4 rounded-t-lg">
                     <div className="flex justify-between items-center">
                         <div className="flex space-x-5">
                                 <ul className={`flex ${isMenuOpen ? 'flex-col' : 'space-x-5'}`}>
@@ -90,7 +106,7 @@ export default function Layout({ children, title, w}) {
                 </div>
                 {/*{state.view !== 'home' && <div class="mt-4"><button class={styles.link} onClick={() => { dispatch({ type: "SET_VIEW", param: "home" }); state.view !== "register" ? dispatch({type: "SET_USER", param: null}) : null}}>back home</button></div>}*/}
                     {state.error !== '' && <Error />}
-            </div>
+                </div>
             </>
     )
 }
