@@ -114,7 +114,7 @@ export default function GuestsManager({data}) {
       <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 max-h-[500px] scrollbar-track-gray-100">
         <table>
           <thead>
-            <tr className="text-gray-600 m-5 md:text-2xl font-bold">
+            <tr className="text-gray-600 mt-2 md:text-2xl font-bold">
               <td className="px-4">Guest Name</td>
               <td className="px-4">Amount</td>
               <td className="px-4">Category</td>

@@ -2,11 +2,12 @@ import { useRef, useState } from "react";
 import  roundTable  from '../assets/roundTable.png';
 import Image from 'next/image';
 import Draggable from 'react-draggable';
+import TableDialog from "./table_dialog";
 
 export default function roundTableComponent (props) {
-  const { current_seats, guests_in_table, max_seats, subject, x, y, onUpdateCoordinates } = props
-  const refImage = useRef(null)
-  const divRef = useRef(null)
+  const { table, addGuest, index, guests, removeGuest, x, y, onUpdateCoordinates} = props
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [guestsInTable, setGuests] = useState()
   const [dragging, setDragging] = useState(false);
   const [position, setPosition] = useState({ x: x, y: y });
   let dx = 0, dy = 0;
@@ -17,6 +18,15 @@ export default function roundTableComponent (props) {
     dx = 0
     dy = 0
   };
+
+  const handleDoubleClick = () => {
+    setGuests(getGuests())
+    handleOpenDialog()
+  }
+
+  const handleOpenDialog = () => setIsDialogOpen(true)
+  
+    const handleCancelDialog = () => setIsDialogOpen(false)
 
   const handleMouseMove = (event, { deltaX, deltaY }) => {
     if (!dragging) return;
@@ -41,6 +51,18 @@ export default function roundTableComponent (props) {
     setPosition({ x: newX, y: newY });
     onUpdateCoordinates({ x: (newX/parentRect.width)*100, y: (newY/parentRect.height)*100 });
   };
+
+  const getGuests = () => {
+    let guestsInTable = {}
+    
+    table.guests.forEach(guestID => {
+        guestsInTable[guestID] = {
+          guestName: guests.guests[guestID].name,
+          guestAmount: guests.guests[guestID].amount
+        }
+    })
+    return guestsInTable
+}
 
   const containerStyle = {
     position: 'absolute',
