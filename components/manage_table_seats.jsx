@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Layout from "./layout";
 import { styles } from '../utils/style';
 import RoundTableComponent from './roundTableComponent';
@@ -6,102 +6,167 @@ import RoundTableComponent from './roundTableComponent';
 export default function ManageTableSeats() {
     const [selectedRow, setSelectedRow] = useState(null)
     const [guests, setGuests] = useState({guests: [], amount: 0})
-    const [tables, setTables] = useState({tables: [], amount: 0})
+    const [tables, setTables] = useState({ tables: [], amount: 0 })
     const manage_table_seats = "Manage Tables Seats"
+    const parentRef = useRef(null);
+    const [parentWidth, setParentWidth] = useState(0);
+    const [parentHeight, setParentHeight] = useState(0);
 
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user'))
-        async function fetchData() {
-        const response = await fetch('/api/guests', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ userId: user.userId })
-            })
+  useEffect(() => { 
+    async function fetchData() {
+      //Get user's guests list
+      const user = JSON.parse(localStorage.getItem('user'))
+      let response = await fetch('/api/guests', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ userId: user.userId })
+      })
 
-          if (response.ok) {
-            let res = await response.json();
-            setGuests(res)
-          }
+      if (response.ok) {
+        let res = await response.json();
+        setGuests(res)
+      }
+      
+      //Get user's tables info
+      response = await fetch('/api/tables', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ userId: user.userId })
+      })
+
+      if (response.ok) {
+        let res = await response.json();
+        setTables(res)
+      }
+      
+
+      //Handle different sizes of the window
+      const handleResize = () => {
+        if (parentRef.current) {
+          const { width, height } = parentRef.current.getBoundingClientRect();
+          setParentWidth(width);
+          setParentHeight(height);
         }
-        
-        async function fetchDataTables() {
-            const response = await fetch('/api/tables', {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ userId: user.userId })
-              })
-        
-              if (response.ok) {
-                let res = await response.json();
-                setTables(res)
-              }
-            }
+      };
 
-        fetchData()
-        fetchDataTables()
-    }, [])
-
-    const handleRowClick = (rowId) => {
-        if(rowId === selectedRow)
-            setSelectedRow(null)
-        else
-            setSelectedRow(rowId);
-        console.log(selectedRow)
-    };
-
-    const addGuest = (index) => {
-        if(selectedRow) {
-            if(tables[index].current_seats + guests.guests[selectedRow].amount > tables[index].max_seats) {
-                console.log("Table is full")
-                return
-            }
-
-            if(selectedRow !== null && !tables[index].guests.includes(selectedRow)) {
-                tables[index].guests.push(selectedRow)
-                tables[index].current_seats += guests.guests[selectedRow].amount
-                guests.guests[selectedRow].table = index
-                setSelectedRow(null)
-                console.log(tables[index].guests)
-            }
-        }
+      handleResize(); // Initial measurement
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
     }
+    fetchData()
+  }, [])
 
-    const getGuests = (tableNum) => {
-        const guestsInTable = []
-        
-        tables[tableNum].guests.forEach(guestNum => {
-            const guest = {
-                guestName: guests.guests[guestNum].name,
-                guestAmount: guests.guests[guestNum].amount
-            }
-            guestsInTable.push(guest)
-        })
-        return guestsInTable
-    }
+  const handleRowClick = (rowId) => {
+      if(rowId === selectedRow)
+          setSelectedRow(null)
+      else
+          setSelectedRow(rowId);
+  };
 
-    const removeGuest = (tableNum, guestID) => {
-        tables[tableNum].guests = tables[tableNum].guests.filter(element => element !== parseInt(guestID))
-        tables[tableNum].current_seats -= guests.guests[guestID].amount
-        console.log(tables[tableNum])
+  const addGuest = (index) => {
+    if (selectedRow) {
+      if (
+        tables[index].current_seats + guests.guests[selectedRow].amount >
+        tables[index].max_seats
+      ) {
+        alert("Table is full");
+        return;
+      }
+
+    if (selectedRow !== null && !tables[index].guests.includes(selectedRow)) {
+      const updatedTables = [...tables];
+      updatedTables[index] = {
+        ...updatedTables[index],
+        guests: [...updatedTables[index].guests, selectedRow],
+        current_seats: updatedTables[index].current_seats + guests.guests[selectedRow].amount,
+      };
+      setTables(updatedTables);
+
+      guests.guests[selectedRow].table = index
+
+      setSelectedRow(null);
     }
+  }
+};
+
+  const removeGuest = (tableNum, guestID) => {
+    tables[tableNum].guests = tables[tableNum].guests.filter(element => element !== parseInt(guestID))
+    tables[tableNum].current_seats -= guests.guests[guestID].amount
+
+    const updatedGuests = { ...guests }
+    updatedGuests.guests[guestID].table = 0
+    setGuests(updatedGuests)
+    console.log(tables[tableNum])
+  }
+
+  const handleTableCoordinatesUpdate = (index, coordinates) => {
+    setTables((prevTables) => {
+      const updatedTables = [...prevTables];
+      updatedTables[index] = {
+        ...updatedTables[index],
+        x: coordinates.x,
+        y: coordinates.y
+      };
+      return updatedTables;
+    });
+  };
+
+  const saveChanges = async () => {
+    const user = JSON.parse(localStorage.getItem('user'))
+    let response = await fetch('/api/update_table', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ userId: user.userId, tables: tables })
+    })
+
+    if (response.ok) {
+      response = await fetch('/api/update_guests', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ userId: user.userId, guests: guests })
+      })
+
+      if (response.ok) {
+        let res = await response.json();
+        alert('SUCCESS BITCHES')
+      }
+    }
+  }
 
     return (
-        <Layout w="95vw" title={manage_table_seats}>
+        <Layout title={manage_table_seats} w="75vw">
             <div className="flex justify-between relative">
-                <div className="w-screen">
-                {Array.isArray(tables) && tables.map((table, index) => {
-                    if(table === null)
-                        return null
-                    return(
-                        <RoundTableComponent removeGuest = {removeGuest} guests={guests} addGuest={() => addGuest(index)} index={index} table={table}/>
-                    )
-                })}
+                <div ref={parentRef} className="w-[70%] h-[500px]">
+                  {Array.isArray(tables) &&
+                      tables.map((table, index) => {
+                        if (table === null) return null;
+                        const x = (parentWidth / 100) * table.x;
+                        const y = (parentHeight / 100) * table.y;
+                        return (
+                          <RoundTableComponent
+                            key={index}
+                            table={table}
+                            removeGuest={removeGuest}
+                            guests={guests}
+                            index={index}
+                            addGuest={() => addGuest(index)}
+                            x={(parentWidth / 100) * table.x}
+                            y={(parentHeight / 100) * table.y}
+                            onUpdateCoordinates={(coordinates) => handleTableCoordinatesUpdate(index, coordinates)
+                            }
+                          />
+                        );
+                      })}
                 </div>
-                <div className=" w-[550px] h-[full] overflow-y-auto">
+                <div className=" w-[30%] h-[full] overflow-y-auto">
                     <table className="w-full border-gray-500 border-4">
                         <thead>
                             <tr>
@@ -127,7 +192,8 @@ export default function ManageTableSeats() {
                         </tbody>
                     </table>
                 </div>
-            </div>
+        </div>
+        <button onClick={() => saveChanges()}>Save</button>
             </Layout>
     )
 

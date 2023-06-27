@@ -155,6 +155,7 @@ export default function GuestsManager({data}) {
         <div className={styles.subTitle + " mt-5 mx-auto"}>Total Amount: {guests.amount}</div>
         <button onClick={handleOpenDialog} className={styles.button + " mx-auto"}>Add Guest</button>
         <button onClick={saveChanges} className={"bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 mt-2 rounded" + " w-[200px] mx-auto text-center"}>Save Changes</button>
+
       </div>
       {isDialogOpen && <InputDialog onConfirm={handleConfirmDialog} onCancel={handleCancelDialog} />}
       
