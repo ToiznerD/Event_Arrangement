@@ -10,7 +10,7 @@ export default function Home() {
 
     return(
       <Layout title="Seat Wise">
-         <Image src={table} width={300} height={150} className="mx-auto"/>
+         <Image src={table} width={300} height={150} alt="logo" className="mx-auto"/>
           <div className={styles.content}>
           Use a wedding seating tool to plan where your guests are seated. Super easy! 
         </div>

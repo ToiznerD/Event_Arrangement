@@ -1,20 +1,20 @@
-import { useRef, useState } from "react";
-import  roundTable  from '../assets/roundTable.png';
+import React, { useRef, useState } from "react";
+import roundTable  from '../assets/roundTable.png';
 import Image from 'next/image';
 import Draggable from 'react-draggable';
 import TableDialog from "./table_dialog";
 
-export default function roundTableComponent (props) {
-  const { table, addGuest, index, guests, removeGuest, x, y, onUpdateCoordinates} = props
+const RoundTableComponent = ({ table, addGuest, index, guests, removeGuest, x, y, onUpdateCoordinates }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [guestsInTable, setGuests] = useState()
-  const [dragging, setDragging] = useState(false);
-  const [position, setPosition] = useState({ x: x, y: y });
+  const divRef = useRef()
   let dx = 0, dy = 0;
 
   const handleMouseDown = (event) => {
     event.preventDefault();
-    setDragging(true);
+    if (event.button == 0) {
+      addGuest()
+    }
     dx = 0
     dy = 0
   };
@@ -26,10 +26,9 @@ export default function roundTableComponent (props) {
 
   const handleOpenDialog = () => setIsDialogOpen(true)
   
-    const handleCancelDialog = () => setIsDialogOpen(false)
+  const handleCancelDialog = () => setIsDialogOpen(false)
 
   const handleMouseMove = (event, { deltaX, deltaY }) => {
-    if (!dragging) return;
     dx += deltaX
     dy += deltaY
   };
@@ -37,19 +36,16 @@ export default function roundTableComponent (props) {
 
 
   const handleMouseUp = () => {
-    setDragging(false);
     const parentRect = divRef.current.parentNode.getBoundingClientRect();
-
-    let newX =position.x + dx;
-    let newY =position.y + dy;
+    let newX =x + dx;
+    let newY =y + dy;
 
     if (newX < 0) newX = 0;
     if (newX > parentRect.width) newX = parentRect.width;
     if (newY < 0) newY = 0;
     if (newY > parentRect.height) newY = parentRect.height;
-  
-    setPosition({ x: newX, y: newY });
-    onUpdateCoordinates({ x: (newX/parentRect.width)*100, y: (newY/parentRect.height)*100 });
+
+    onUpdateCoordinates({ x: (newX / parentRect.width) * 100, y: (newY / parentRect.height) * 100 });
   };
 
   const getGuests = () => {
@@ -64,23 +60,23 @@ export default function roundTableComponent (props) {
     return guestsInTable
 }
 
-  const containerStyle = {
-    position: 'absolute',
-    left: `${x - 50}px`,
-    top: `${y - 50}px`,
-  };
 
   return (
-    <Draggable onStart={handleMouseDown} onDrag={handleMouseMove} onStop={handleMouseUp} bounds="parent"  >
-      <div ref={divRef} className="cursor-pointer absolute flex flex-col items-center justify-center font-bold my-1" style={ containerStyle }>
-          <Image src={roundTable} ref={refImage} alt="pic" style={{ width: '100px', height: '100px' }}/>
+    <>
+    <Draggable onStart={handleMouseDown} onDrag={handleMouseMove} onStop={handleMouseUp} bounds="parent" position={{ x, y }}>
+      <div ref={divRef} onDoubleClick={handleDoubleClick} className="cursor-pointer absolute flex flex-col items-center justify-center font-bold my-1">
+          <Image src={roundTable} alt="pic" style={{ width: '100px', height: '100px' }}/>
           <div className="absolute mb-1">
-            {current_seats}/{max_seats}
+            {table.current_seats}/{table.max_seats}
           </div>
           <div className="absolute mt-[100px]">
-          {subject}
+          {table.subject}
           </div>
       </div>
     </Draggable>
+      {isDialogOpen && <TableDialog removeGuest={removeGuest} guestsInTable={guestsInTable} onCancel={handleCancelDialog} subject={table.subject} index={index} />}
+      </>
   )
 }
+
+export default RoundTableComponent;

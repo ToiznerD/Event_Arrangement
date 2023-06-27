@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Layout from "./layout";
 import { styles } from '../utils/style';
 import RoundTableComponent from './roundTableComponent';
@@ -6,13 +6,13 @@ import RoundTableComponent from './roundTableComponent';
 export default function ManageTableSeats() {
     const [selectedRow, setSelectedRow] = useState(null)
     const [guests, setGuests] = useState({guests: [], amount: 0})
-    const [tables, setTables] = useState({tables: [], amount: 0})
+    const [tables, setTables] = useState({ tables: [], amount: 0 })
     const manage_table_seats = "Manage Tables Seats"
     const parentRef = useRef(null);
     const [parentWidth, setParentWidth] = useState(0);
     const [parentHeight, setParentHeight] = useState(0);
 
-  useEffect(() => {
+  useEffect(() => { 
     async function fetchData() {
       //Get user's guests list
       const user = JSON.parse(localStorage.getItem('user'))
@@ -41,7 +41,6 @@ export default function ManageTableSeats() {
       if (response.ok) {
         let res = await response.json();
         setTables(res)
-        console.log(res)
       }
       
 
@@ -61,58 +60,64 @@ export default function ManageTableSeats() {
     fetchData()
   }, [])
 
-    const handleRowClick = (rowId) => {
-        if(rowId === selectedRow)
-            setSelectedRow(null)
-        else
-            setSelectedRow(rowId);
-        console.log(selectedRow)
-    };
+  const handleRowClick = (rowId) => {
+      if(rowId === selectedRow)
+          setSelectedRow(null)
+      else
+          setSelectedRow(rowId);
+  };
 
-    const addGuest = (index) => {
-        if(selectedRow) {
-            if(tables[index].current_seats + guests.guests[selectedRow].amount > tables[index].max_seats) {
-                console.log("Table is full")
-                return
-            }
+  const addGuest = (index) => {
+    if (selectedRow) {
+      if (
+        tables[index].current_seats + guests.guests[selectedRow].amount >
+        tables[index].max_seats
+      ) {
+        alert("Table is full");
+        return;
+      }
 
-            if(selectedRow !== null && !tables[index].guests.includes(selectedRow)) {
-                tables[index].guests.push(selectedRow)
-                tables[index].current_seats += guests.guests[selectedRow].amount
-                guests.guests[selectedRow].table = index
-                setSelectedRow(null)
-                console.log(tables[index].guests)
-            }
-        }
+    if (selectedRow !== null && !tables[index].guests.includes(selectedRow)) {
+      const updatedTables = [...tables];
+      updatedTables[index] = {
+        ...updatedTables[index],
+        guests: [...updatedTables[index].guests, selectedRow],
+        current_seats: updatedTables[index].current_seats + guests.guests[selectedRow].amount,
+      };
+      setTables(updatedTables);
+
+      guests.guests[selectedRow].table = index
+
+      setSelectedRow(null);
     }
+  }
+};
 
-    const getGuests = (tableNum) => {
-        const guestsInTable = []
-        
-        tables[tableNum].guests.forEach(guestNum => {
-            const guest = {
-                guestName: guests.guests[guestNum].name,
-                guestAmount: guests.guests[guestNum].amount
-            }
-            guestsInTable.push(guest)
-        })
-        return guestsInTable
-    }
+  const removeGuest = (tableNum, guestID) => {
+    tables[tableNum].guests = tables[tableNum].guests.filter(element => element !== parseInt(guestID))
+    tables[tableNum].current_seats -= guests.guests[guestID].amount
 
-    const removeGuest = (tableNum, guestID) => {
-        tables[tableNum].guests = tables[tableNum].guests.filter(element => element !== parseInt(guestID))
-        tables[tableNum].current_seats -= guests.guests[guestID].amount
-        console.log(tables[tableNum])
-    }
+    const updatedGuests = { ...guests }
+    updatedGuests.guests[guestID].table = 0
+    setGuests(updatedGuests)
+    console.log(tables[tableNum])
+  }
 
   const handleTableCoordinatesUpdate = (index, coordinates) => {
-    tables[index].x = coordinates.x
-    tables[index].y = coordinates.y
+    setTables((prevTables) => {
+      const updatedTables = [...prevTables];
+      updatedTables[index] = {
+        ...updatedTables[index],
+        x: coordinates.x,
+        y: coordinates.y
+      };
+      return updatedTables;
+    });
   };
 
   const saveChanges = async () => {
     const user = JSON.parse(localStorage.getItem('user'))
-    const response = await fetch('/api/update_table', {
+    let response = await fetch('/api/update_table', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -121,13 +126,23 @@ export default function ManageTableSeats() {
     })
 
     if (response.ok) {
-      let res = await response.json();
-      alert('SUCCESS BITCHES')
+      response = await fetch('/api/update_guests', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ userId: user.userId, guests: guests })
+      })
+
+      if (response.ok) {
+        let res = await response.json();
+        alert('SUCCESS BITCHES')
+      }
     }
   }
 
     return (
-        <Layout w="75vw">
+        <Layout title={manage_table_seats} w="75vw">
             <div className="flex justify-between relative">
                 <div ref={parentRef} className="w-[70%] h-[500px]">
                   {Array.isArray(tables) &&
@@ -137,16 +152,15 @@ export default function ManageTableSeats() {
                         const y = (parentHeight / 100) * table.y;
                         return (
                           <RoundTableComponent
-                            subject={table.subject}
+                            key={index}
                             table={table}
                             removeGuest={removeGuest}
                             guests={guests}
-                            addGuest={() => addGuest(index)}
                             index={index}
-                            x={x}
-                            y={y}
-                            onUpdateCoordinates={(coordinates) =>
-                              handleTableCoordinatesUpdate(index, coordinates)
+                            addGuest={() => addGuest(index)}
+                            x={(parentWidth / 100) * table.x}
+                            y={(parentHeight / 100) * table.y}
+                            onUpdateCoordinates={(coordinates) => handleTableCoordinatesUpdate(index, coordinates)
                             }
                           />
                         );
