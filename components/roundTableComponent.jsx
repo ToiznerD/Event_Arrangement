@@ -70,7 +70,7 @@ const RoundTableComponent = ({ table, addGuest, index, guests, removeGuest, x, y
             {table.current_seats}/{table.max_seats}
           </div>
           <div className="absolute mt-[100px]">
-          {table.subject}
+            {index} - {table.subject}
           </div>
       </div>
     </Draggable>

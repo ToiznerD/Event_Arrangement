@@ -25,50 +25,54 @@ export default function InputDialog({ onConfirm, onCancel }) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4">Enter Guest Details</h2>
-        <div className="mb-4">
-          <label className="block text-gray-700">Name:</label>
-          <input
-            type="text"
-            value={name}
-            onInput={(e) => setName(e.target.value)}
-            className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700">Amount:</label>
-          <input
-            type="number"
-            value={amount}
-            onInput={(e) => setAmount(e.target.value)}
-            className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700">Category:</label>
-          <input
-            type="text"
-            value={category}
-            onInput={(e) => setCategory(e.target.value)}
-            className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-          />
-        </div>
-        <div className="flex justify-end">
-        <button
-            onClick={handleConfirm}
-            className={styles.button}
-          >
-            Confirm
-          </button>
+      <form onSubmit={handleConfirm}>
+        <div className="bg-white p-6 rounded-lg">
+          <h2 className="text-xl font-semibold mb-4">Enter Guest Details</h2>
+          <div className="mb-4">
+            <label className="block text-gray-700">Name:</label>
+            <input
+              type="text"
+              value={name}
+              onInput={(e) => setName(e.target.value)}
+              required
+              className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Amount:</label>
+            <input
+              type="number"
+              value={amount}
+              onInput={(e) => setAmount(e.target.value)}
+              className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Category:</label>
+            <input
+              type="text"
+              value={category}
+              onInput={(e) => setCategory(e.target.value)}
+              required
+              className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+            />
+          </div>
+          <div className="flex justify-end">
           <button
-            onClick={handleCancel}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded ml-9"
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
+              type="submit"
+              className={styles.button}
+            >
+              Confirm
+            </button>
+            <button
+              onClick={handleCancel}
+              className="px-4 py-2 bg-gray-300 text-gray-700 hover:bg-gray-200 rounded ml-9"
+            >
+              Cancel
+            </button>
+          </div>
+          </div>
+      </form>
     </div>
   );
 }

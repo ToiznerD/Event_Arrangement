@@ -54,6 +54,7 @@ export default function GuestsManager({data}) {
       name: data.name,
       amount: parseInt(data.amount),
       category: data.category,
+      table: 0
     };
   
     const updatedGuests = {
@@ -121,7 +122,7 @@ export default function GuestsManager({data}) {
             </tr>
           </thead>
           <tbody>
-            { guests !== null && guests.guests.map((guest, index) => {
+            { guests.guests !== undefined && guests.guests.map((guest, index) => {
               console.log(guest);
               if (guest === null)
                 return null
