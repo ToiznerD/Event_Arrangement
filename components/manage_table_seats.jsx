@@ -2,6 +2,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Layout from "./layout";
 import { styles } from '../utils/style';
 import RoundTableComponent from './roundTableComponent';
+import NewTableDialog from "./new_table_dialog";
+
 
 export default function ManageTableSeats() {
     const [selectedRow, setSelectedRow] = useState(null)
@@ -11,6 +13,7 @@ export default function ManageTableSeats() {
     const parentRef = useRef(null);
     const [parentWidth, setParentWidth] = useState(0);
     const [parentHeight, setParentHeight] = useState(0);
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   useEffect(() => { 
     async function fetchData() {
@@ -142,11 +145,11 @@ export default function ManageTableSeats() {
     }
   }
 
-  const addTable = () => {
+  const addTable = (max_seats, subject) => {
     const newTable = {
       current_seats: 0,
-      max_seats: 15, // add a choosing option in the dialog
-      subject: "New Table", // add subject input in the dialog
+      max_seats: max_seats, // add a choosing option in the dialog
+      subject: subject, // add subject input in the dialog
       guests: [],
       x: 0,
       y: 0
@@ -183,61 +186,69 @@ export default function ManageTableSeats() {
     })
   }
 
+  const handleOpenDialog = () => setIsDialogOpen(true)
+  
+  const handleCancelDialog = () => setIsDialogOpen(false)
+
     return (
+      <>
         <Layout title={manage_table_seats} w="75vw">
-            <div className="flex justify-between relative">
-                <div ref={parentRef} className="w-[70%] h-[500px]">
-                  {Array.isArray(tables) &&
-                      tables.map((table, index) => {
-                        if (table === null) return null;
-                        const x = (parentWidth / 100) * table.x;
-                        const y = (parentHeight / 100) * table.y;
-                        return (
-                          <RoundTableComponent
-                            key={index}
-                            table={table}
-                            removeGuest={removeGuest}
-                            guests={guests}
-                            index={index}
-                            addGuest={() => addGuest(index)}
-                            x={(parentWidth / 100) * table.x}
-                            y={(parentHeight / 100) * table.y}
-                            onUpdateCoordinates={(coordinates) => handleTableCoordinatesUpdate(index, coordinates)}
-                            removeTable={removeTable}
-                          />
-                        );
+          <div className="flex justify-between relative">
+              <div ref={parentRef} className="w-[70%] h-[500px]">
+                {Array.isArray(tables) &&
+                    tables.map((table, index) => {
+                      if (table === null) return null;
+                      const x = (parentWidth / 100) * table.x;
+                      const y = (parentHeight / 100) * table.y;
+                      return (
+                        <RoundTableComponent
+                          key={index}
+                          table={table}
+                          removeGuest={removeGuest}
+                          guests={guests}
+                          index={index}
+                          addGuest={() => addGuest(index)}
+                          x={(parentWidth / 100) * table.x}
+                          y={(parentHeight / 100) * table.y}
+                          onUpdateCoordinates={(coordinates) => handleTableCoordinatesUpdate(index, coordinates)}
+                          removeTable={removeTable}
+                        />
+                      );
+                    })}
+              </div>
+              <div className=" w-[30%] h-[full] overflow-y-auto">
+                  <table className="w-full border-gray-500 border-4">
+                      <thead>
+                          <tr>
+                              <th className={styles.td}>Name</th>
+                              <th className={styles.td}>Amount</th>
+                              <th className={styles.td}>Category</th>
+                              <th className={styles.td} >Table</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      {guests !== null && guests.guests.map((guest, index) => {
+                      if (guest === null)
+                          return null
+                      return(
+                          <tr key={index} onClick={() => handleRowClick(index)} className={selectedRow === index ? styles.selectedRow : guest.table !== 0 ? styles.normalRowDisabled : styles.normalRow}>
+                              <td className={styles.td}>{guest.name}</td>
+                              <td className={styles.td}>{guest.amount}</td>
+                              <td className={styles.td}>{guest.category}</td>
+                              <td className={styles.td}>{guest.table}</td>
+                          </tr>
+                          )
                       })}
-                </div>
-                <div className=" w-[30%] h-[full] overflow-y-auto">
-                    <table className="w-full border-gray-500 border-4">
-                        <thead>
-                            <tr>
-                                <th className={styles.td}>Name</th>
-                                <th className={styles.td}>Amount</th>
-                                <th className={styles.td}>Category</th>
-                                <th className={styles.td} >Table</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {guests !== null && guests.guests.map((guest, index) => {
-                        if (guest === null)
-                            return null
-                        return(
-                            <tr key={index} onClick={() => handleRowClick(index)} className={selectedRow === index ? styles.selectedRow : guest.table !== 0 ? styles.normalRowDisabled : styles.normalRow}>
-                                <td className={styles.td}>{guest.name}</td>
-                                <td className={styles.td}>{guest.amount}</td>
-                                <td className={styles.td}>{guest.category}</td>
-                                <td className={styles.td}>{guest.table}</td>
-                            </tr>
-                            )
-                        })}
-                        </tbody>
-                    </table>
-                </div>
-        </div>
-        <button onClick={() => saveChanges()}>Save</button>
-        <button className="ml-5" onClick={() => addTable()}>Add table</button>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+          <button onClick={() => saveChanges()}>Save</button>
+          {/* <button className="ml-5" onClick={() => addTable()}>Add table</button> */}
+          <button className="ml-5" onClick={() => handleOpenDialog()}>Add table</button>
         </Layout>
+        {isDialogOpen && <NewTableDialog addTable={addTable} onCancel={handleCancelDialog}/>}
+        </>
     )
 
 }
