@@ -61,7 +61,8 @@ const RoundTableComponent = ({ table, addGuest, index, guests, removeGuest, x, y
   const handleTouchStart = () => {
     touchTimeoutRef.current = setTimeout(() => {
       // Perform your single tap action
-      console.log('Single tap');
+      
+      //handleDoubleClick()
     }, 300); // Adjust the duration as per your requirement
   };
 
@@ -71,14 +72,16 @@ const RoundTableComponent = ({ table, addGuest, index, guests, removeGuest, x, y
       touchTimeoutRef.current = null;
 
       // Perform your double tap action
-      console.log('Double tap');
+      handleDoubleClick()
     }
   };
 
   return (
     <>
     <Draggable onStart={handleMouseDown} onDrag={handleMouseMove} onStop={handleMouseUp} bounds="parent" position={{ x, y }}>
-      <div ref={divRef} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}
+
+      <div ref={divRef} onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd} 
       onDoubleClick={handleDoubleClick} className="cursor-pointer absolute flex flex-col items-center justify-center font-bold my-1">
           <Image src={roundTable} alt="pic" style={{ width: '100px', height: '100px' }}/>
           <div className="absolute mb-1">
