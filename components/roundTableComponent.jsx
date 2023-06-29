@@ -62,7 +62,7 @@ const RoundTableComponent = ({ table, addGuest, index, guests, removeGuest, x, y
     touchTimeoutRef.current = setTimeout(() => {
       // Perform your single tap action
       
-      //handleDoubleClick()
+      handleDoubleClick()
     }, 300); // Adjust the duration as per your requirement
   };
 
