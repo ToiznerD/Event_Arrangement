@@ -54,7 +54,6 @@ export default function TableDialog({ onCancel, subject, index, guestsInTable, r
         </table>
         <div className="flex w-[420px] gap-5">
           <button onClick={() => deleteGuest(index, selectedRow)} className={styles.button}>
-            {/* {"px-4 py-2 bg-gray-300 text-gray-700 hover:bg-gray-400 rounded w-1/2"} */}
             Remove
           </button>
           <button onClick={() => deleteTable(index)} className={"px-4 py-2 bg-red-500 text-white font-bold hover:bg-red-700 rounded w-1/2"}>
