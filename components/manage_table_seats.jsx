@@ -6,7 +6,7 @@ import RoundTableComponent from './roundTableComponent';
 export default function ManageTableSeats() {
     const [selectedRow, setSelectedRow] = useState(null)
     const [guests, setGuests] = useState({guests: [], amount: 0})
-    const [tables, setTables] = useState({ tables: [], amount: 0 })
+    const [tables, setTables] = useState({tables: [], amount: 0})
     const manage_table_seats = "Manage Tables Seats"
     const parentRef = useRef(null);
     const [parentWidth, setParentWidth] = useState(0);
@@ -94,18 +94,19 @@ export default function ManageTableSeats() {
 };
 
   const removeGuest = (tableNum, guestID) => {
-    tables[tableNum].guests = tables[tableNum].guests.filter(element => element !== parseInt(guestID))
-    tables[tableNum].current_seats -= guests.guests[guestID].amount
+    if(guestID !== null) {
+      tables[tableNum].guests = tables[tableNum].guests.filter(element => element !== parseInt(guestID))
+      tables[tableNum].current_seats -= guests.guests[guestID].amount
 
-    const updatedGuests = { ...guests }
-    updatedGuests.guests[guestID].table = 0
-    setGuests(updatedGuests)
-    console.log(tables[tableNum])
+      const updatedGuests = { ...guests }
+      updatedGuests.guests[guestID].table = 0
+      setGuests(updatedGuests)
+    }
   }
 
   const handleTableCoordinatesUpdate = (index, coordinates) => {
     setTables((prevTables) => {
-      const updatedTables = [...prevTables];
+      const updatedTables = [...prevTables]
       updatedTables[index] = {
         ...updatedTables[index],
         x: coordinates.x,
@@ -141,6 +142,47 @@ export default function ManageTableSeats() {
     }
   }
 
+  const addTable = () => {
+    const newTable = {
+      current_seats: 0,
+      max_seats: 15, // add a choosing option in the dialog
+      subject: "New Table", // add subject input in the dialog
+      guests: [],
+      x: 0,
+      y: 0
+    };
+    setTables([...tables, newTable]);
+  }
+
+  useEffect(() => {
+    console.log(tables)
+  },[tables])
+
+  const removeTable = (index) => {
+    reduceGuestsTable(index)
+    setTables((prevTables) => {
+      const updatedTables = [...prevTables]
+      updatedTables[index].guests.forEach(element => {
+        removeGuest(index,element)
+      })
+      updatedTables.splice(index, 1);
+      return updatedTables;
+    })
+  }
+
+  const reduceGuestsTable = (index) => {
+    setGuests((prevGuests) => {
+      const updatedGuests = {...prevGuests}
+      updatedGuests.guests.forEach((element) => {
+        if(element !== null){
+          if(element.table > index)
+            element.table = element.table - 1
+        }
+      })
+      return updatedGuests
+    })
+  }
+
     return (
         <Layout title={manage_table_seats} w="75vw">
             <div className="flex justify-between relative">
@@ -160,8 +202,8 @@ export default function ManageTableSeats() {
                             addGuest={() => addGuest(index)}
                             x={(parentWidth / 100) * table.x}
                             y={(parentHeight / 100) * table.y}
-                            onUpdateCoordinates={(coordinates) => handleTableCoordinatesUpdate(index, coordinates)
-                            }
+                            onUpdateCoordinates={(coordinates) => handleTableCoordinatesUpdate(index, coordinates)}
+                            removeTable={removeTable}
                           />
                         );
                       })}
@@ -194,7 +236,8 @@ export default function ManageTableSeats() {
                 </div>
         </div>
         <button onClick={() => saveChanges()}>Save</button>
-            </Layout>
+        <button className="ml-5" onClick={() => addTable()}>Add table</button>
+        </Layout>
     )
 
 }
