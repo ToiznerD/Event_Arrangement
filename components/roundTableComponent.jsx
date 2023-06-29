@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Draggable from 'react-draggable';
 import TableDialog from "./table_dialog";
 
-const RoundTableComponent = ({ table, addGuest, index, guests, removeGuest, x, y, onUpdateCoordinates }) => {
+const RoundTableComponent = ({ table, addGuest, index, guests, removeGuest, x, y, onUpdateCoordinates, removeTable }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [guestsInTable, setGuests] = useState()
   const divRef = useRef()
@@ -12,9 +12,7 @@ const RoundTableComponent = ({ table, addGuest, index, guests, removeGuest, x, y
 
   const handleMouseDown = (event) => {
     event.preventDefault();
-    if (event.button == 0) {
-      addGuest()
-    }
+    addGuest()
     dx = 0
     dy = 0
   };
@@ -74,7 +72,7 @@ const RoundTableComponent = ({ table, addGuest, index, guests, removeGuest, x, y
           </div>
       </div>
     </Draggable>
-      {isDialogOpen && <TableDialog removeGuest={removeGuest} guestsInTable={guestsInTable} onCancel={handleCancelDialog} subject={table.subject} index={index} />}
+      {isDialogOpen && <TableDialog removeTable={removeTable} removeGuest={removeGuest} guestsInTable={guestsInTable} onCancel={handleCancelDialog} subject={table.subject} index={index} />}
       </>
   )
 }
