@@ -11,15 +11,24 @@ export default function Dashboard() {
   console.log(user)
   const [guestAmount,setGuestAmount] = useState(0)
   useEffect(() => {
-    let user = JSON.parse(localStorage.getItem("user")).username
-    setTitle("Welcome back " + user)
-    // const snapshot = await database.ref(`Guests/${user.userid}`).once('value');
-    // if (snapshot.exists()) {
-    //   guestAmount = JSON.parse(snapshot.val()).amount;
-    // }
-    // else {
-    //   console.log("FAIL");
-    // }
+    let user = JSON.parse(localStorage.getItem("user"))
+    setTitle("Welcome back " + user.username)
+    async function fetchData() {
+      const response = await fetch('/api/guests', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ userId: user.userId })
+      })
+
+      if (response.ok) {
+        let res = await response.json();
+        
+        setGuestAmount(res.amount)
+      }
+    }
+    fetchData()
   }, [])
   
   
