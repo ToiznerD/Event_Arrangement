@@ -22,19 +22,28 @@ export default function Register() {
         let password = passwordRef.current.value
         let cpassword = cpasswordRef.current.value
         let email = emailRef.current.value
-        let eventDate = selectedDate; 
-    
+
+        const day = selectedDate.getDate()
+        const month = selectedDate.getMonth() + 1
+        const year = selectedDate.getFullYear()
+        const formattedDate = `${day}/${month}/${year}`
+
+        if (cpassword !== password) {
+            dispatch({ type: 'SET_ERROR', param: 'Password confirmation incorrect' })
+            return
+        }
         try {
             const response = await fetch('/api/register', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ username: username, password: password, email: email, eventDate: eventDate})
+            body: JSON.stringify({ username: username, password: password, email: email, eventDate: formattedDate})
             })
             let res = await response.json()
             
             alert(res.message)
+            dispatch({ type: 'SET_VIEW', param: 'login'})
             
 
         } catch (error) {
@@ -54,7 +63,7 @@ export default function Register() {
                     <div className={styles.subTitle}>Email</div>
                     <div><input type="text" className={styles.textInput} required ref={emailRef} /></div>
                     <div className={styles.subTitle}>Event Date</div>
-                    <div><DatePicker selected={selectedDate} minDate={today} onChange={(date) => setSelectedDate(date)} ref={dateRef} /></div>
+                    <div><DatePicker selected={selectedDate} minDate={today} required onChange={(date) => setSelectedDate(date)} ref={dateRef} /></div>
                     <div className="mt-4 mb-2 flex justify-between items-center">
                         <button type="submit" className={styles.buttonReg}>Register</button>
                     </div>

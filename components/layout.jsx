@@ -7,7 +7,7 @@ import Dropdown from './dropDown'
 import Head from 'next/head'
 import Error from './error'
 import Image from 'next/image'
-import hamburger from '../assets/burger-menu.png'
+import hamburger from '../assets/burger.png'
 import table from '../assets/roundTable.png'
 
 export default function Layout({ children, title, w}) {
@@ -15,9 +15,10 @@ export default function Layout({ children, title, w}) {
     const router = useRouter()
     const [isUser, setIsUser] = useState(false)
     const [isMenuOpen, setMenuOpen] = useState(false);
+    const [user, setUser] = useState(null)
     useEffect(() => {
         setIsUser(localStorage.getItem("user") !== null)
-        
+        setUser(localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : null)
     },[])
 
     useEffect(() => {
@@ -67,10 +68,10 @@ export default function Layout({ children, title, w}) {
             <div className="border-2 border-white rounded-3xl shadow-lg shadow-slate-500 md:min-h-[300px] w-screen md:w-[600px] mx-auto overflow-hidden" style={getWidthStyle()}>
                 <nav className="flex items-center justify-between bg-gradient-to-r from-blue-400 to-blue-300 p-4 rounded-t-lg">
                     <div className="flex justify-between items-center">
-                        <div className="flex space-x-5">
-                                <ul className={`flex ${isMenuOpen ? 'flex-col' : 'space-x-5'}`}>
+                        
+                    <ul className={`flex ${isMenuOpen ? 'flex-col' : 'space-x-5'}`}>
                                 <div className="cursor-pointer md:hidden" onClick={() => setMenuOpen(!isMenuOpen)}>
-                                    <Image src={hamburger} width={30} height={30} alt="burger"></Image>
+                                    <Image src={hamburger} width={45} height={44} alt="burger"></Image>
                                  </div>
                                 <li className={isMenuOpen ? 'block' : 'md:block hidden'}>
                                     <Link href="/" className={styles.navigationLink}>Home</Link>
@@ -85,22 +86,23 @@ export default function Layout({ children, title, w}) {
                                     <Link href="contact" className={styles.navigationLink}>Contact</Link>
                                 </li>
                                 <li className={isMenuOpen ? 'block md:hidden' : 'hidden'}>
-                                    <div onClick={handleClick} className={styles.navigationLink}>{isUser ? 'My Account' : 'Login'}</div>
+                                    <div onClick={handleClick} className={styles.navigationLink}>{isUser ? user.username : 'Login'}</div>
                                 </li>
                                     <li className={isMenuOpen ? 'block md:hidden' : 'hidden'}>
                                         {isUser && <span onClick={() => logout()} className="text-white text-lg">Logout</span>}
                                 </li>
                             </ul>
 
-                        </div>
+                        
                     </div>
                     <div id="yaniv" className="md:block hidden justify-end">
                         <div className="relative inline-flex">
-                            <div onClick={handleClick} className={styles.navigationLink}>{isUser ? 'My Account' : 'Login'}</div>
+                            <div onClick={handleClick} className={styles.navigationLink}>{isUser ? user.username : 'Login'}</div>
                             {isUser && <Dropdown className="absolute mt-1 left-full"/>}
                         </div>
                    </div>
                 </nav>
+
                 <div className="px-1">
                     {children}
                 </div>

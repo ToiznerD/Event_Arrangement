@@ -10,5 +10,7 @@ export default async function handler(req, res) {
     }
     else {
         console.log("FAIL")
+        res.statusCode = 500
+        res.json({ success: false, error: "User has no guests" });
     }
 }
