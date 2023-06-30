@@ -48,11 +48,12 @@ const RoundTableComponent = ({ table, addGuest, index, guests, removeGuest, x, y
 
   const getGuests = () => {
     let guestsInTable = {}
-    
-    table.guests.forEach(guestID => {
-        guestsInTable[guestID] = {
-          guestName: guests.guests[guestID].name,
-          guestAmount: guests.guests[guestID].amount
+    console.log('guests: ')
+    console.log(guests.guests)
+    table.guests !== undefined && table.guests.forEach(guestID => {
+      guestsInTable[guestID] = {
+        guestName: guests.guests[guestID].name,
+        guestAmount: guests.guests[guestID].amount
         }
     })
     return guestsInTable
@@ -72,7 +73,7 @@ const RoundTableComponent = ({ table, addGuest, index, guests, removeGuest, x, y
           </div>
       </div>
     </Draggable>
-      {isDialogOpen && <TableDialog removeTable={removeTable} removeGuest={removeGuest} guestsInTable={guestsInTable} onCancel={handleCancelDialog} subject={table.subject} index={index} />}
+      {isDialogOpen && <TableDialog removeTable={removeTable} removeGuest={removeGuest} guestsInTable={getGuests} onCancel={handleCancelDialog} subject={table.subject} index={index} />}
       </>
   )
 }

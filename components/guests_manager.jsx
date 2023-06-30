@@ -13,9 +13,9 @@ export default function GuestsManager({data}) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const title = "Guests Manager";
   const editGuest = useRef()
-  const [guests, setGuests] = useState({guests: [], amount: 0});
+  const [guests, setGuests] = useState({ guests: {}, amount: 0});
   const [editingGuestIndex, setEditingGuestIndex] = useState(null);
-
+  const [key, setKey] = useState(0)
 
   useEffect(() => {
     
@@ -33,7 +33,7 @@ export default function GuestsManager({data}) {
         let res = await response.json();
 
         setGuests(res)
-        
+        setKey(res.guests !== null ? res.guests.key : 0)
       }
     }
     fetchData()
@@ -59,12 +59,11 @@ export default function GuestsManager({data}) {
   
     const updatedGuests = {
       ...guests,
-      guests: [...guests.guests, newGuest],
+      guests: { ...guests.guests, [key.toString()]: newGuest, key: key+1 },
       amount: guests.amount + parseInt(data.amount),
     };
-  
     setGuests(updatedGuests);
-  
+    setKey(key+1)
     // Close the dialog
     setIsDialogOpen(false);
   };
@@ -85,10 +84,8 @@ export default function GuestsManager({data}) {
   const deleteGuest = (index) => {
     const amt = guests['guests'][index].amount
     const updatedGuests = { ...guests };
-    const updatedGuestList = updatedGuests.guests.filter((_, i) => i !== index);
+    delete updatedGuests.guests[index]
     updatedGuests.amount -= amt
-    updatedGuests.guests = updatedGuestList;
-
     setGuests(updatedGuests);
   };
 
@@ -122,10 +119,12 @@ export default function GuestsManager({data}) {
             </tr>
           </thead>
           <tbody>
-            { guests.guests !== undefined && guests.guests.map((guest, index) => {
-              console.log(guest);
-              if (guest === null)
-                return null
+            {guests.guests !== undefined && Object.entries(guests.guests).map((entry) => {
+              let guest = entry[1]
+              let index = entry[0]
+              console.log(guest)
+              if(index === '0') return
+              if (index === 'key') return
               return (
                 <tr className={"text-gray-600 my-4 md:text-2xl"} key={index}>
                   <td className="px-4">{guest.name}</td>
