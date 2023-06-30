@@ -5,7 +5,7 @@ import RoundTableComponent from './roundTableComponent';
 
 export default function ManageTableSeats() {
     const [selectedRow, setSelectedRow] = useState(null)
-    const [guests, setGuests] = useState({guests: [], amount: 0})
+  const [guests, setGuests] = useState({ guests: {}, amount: 0})
     const [tables, setTables] = useState({ tables: [], amount: 0 })
     const manage_table_seats = "Manage Tables Seats"
     const parentRef = useRef(null);
@@ -144,7 +144,7 @@ export default function ManageTableSeats() {
     return (
         <Layout title={manage_table_seats} w="75vw">
             <div className="flex justify-between relative">
-                <div ref={parentRef} className="w-[70%] h-[500px]">
+                <div ref={parentRef} className="w-[70%] max-h-[500px]">
                   {Array.isArray(tables) &&
                       tables.map((table, index) => {
                         if (table === null) return null;
@@ -166,7 +166,7 @@ export default function ManageTableSeats() {
                         );
                       })}
                 </div>
-                <div className=" w-[30%] h-[full] overflow-y-auto">
+                <div className=" w-[30%] h-[500px] overflow-y-auto">
                     <table className="w-full border-gray-500 border-4">
                         <thead>
                             <tr>
@@ -177,18 +177,20 @@ export default function ManageTableSeats() {
                             </tr>
                         </thead>
                         <tbody>
-                        {guests !== null && guests.guests.map((guest, index) => {
-                        if (guest === null)
-                            return null
-                        return(
-                            <tr key={index} onClick={() => handleRowClick(index)} className={selectedRow === index ? styles.selectedRow : guest.table !== 0 ? styles.normalRowDisabled : styles.normalRow}>
-                                <td className={styles.td}>{guest.name}</td>
-                                <td className={styles.td}>{guest.amount}</td>
-                                <td className={styles.td}>{guest.category}</td>
-                                <td className={styles.td}>{guest.table}</td>
-                            </tr>
-                            )
-                        })}
+                          {guests !== null && Object.entries(guests.guests).map((entry) => {
+                            let index = entry[0]
+                            let guest = entry[1]
+                            if (guest === null)
+                                return null
+                            return(
+                                <tr key={index} onClick={() => handleRowClick(index)} className={selectedRow === index ? styles.selectedRow : guest.table !== 0 ? styles.normalRowDisabled : styles.normalRow}>
+                                    <td className={styles.td}>{guest.name}</td>
+                                    <td className={styles.td}>{guest.amount}</td>
+                                    <td className={styles.td}>{guest.category}</td>
+                                    <td className={styles.td}>{guest.table}</td>
+                                </tr>
+                                )
+                            })}
                         </tbody>
                     </table>
                 </div>
