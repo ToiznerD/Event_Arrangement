@@ -9,7 +9,7 @@ export default async function updateGuests (req, res){
       const snapshot = await database.ref(`Tables/${userId}`).once('value');
   
       if (snapshot.exists()) {
-        await database.ref(`Tables/${userId}`).update(tables);
+        await database.ref(`Tables/${userId}`).set(tables);
   
         res.statusCode = 200;
         res.json({ success: true });

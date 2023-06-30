@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { styles } from '../utils/style';
 
-export default function TableDialog({ onCancel, subject, index, guestsInTable, removeGuest }) {
+export default function TableDialog({ onCancel, subject, index, guestsInTable, removeGuest, removeTable }) {
   const [selectedRow, setSelectedRow] = useState(null)
   const [guests, updateGuests] = useState(guestsInTable)
 
@@ -19,8 +19,9 @@ export default function TableDialog({ onCancel, subject, index, guestsInTable, r
     updateGuests(updatedGuests)
   }
 
-  const removeAll = () => {
-
+  const deleteTable = (index) => {
+    removeTable(index)
+    handleCancel()
   }
 
   const handleCancel = () => {
@@ -51,16 +52,18 @@ export default function TableDialog({ onCancel, subject, index, guestsInTable, r
           })}
         </tbody>
         </table>
-        <button onClick={() => deleteGuest(index, selectedRow)} className={"px-4 py-2 bg-gray-300 text-gray-700 hover:bg-gray-400 rounded"}>
-          Remove
-        </button>
-        <button onClick={() => removeAll()} className={"px-4 py-2 bg-gray-300 text-gray-700 hover:bg-gray-400 rounded ml-5"}>
-          Remove all
-        </button>
-        <button onClick={handleCancel} className="px-4 py-2 bg-gray-300 text-gray-700 hover:bg-gray-400 rounded ml-5">
-          Close
-        </button>
-
+        <div className="flex w-[420px] gap-5">
+          <button onClick={() => deleteGuest(index, selectedRow)} className={styles.button}>
+            {/* {"px-4 py-2 bg-gray-300 text-gray-700 hover:bg-gray-400 rounded w-1/2"} */}
+            Remove
+          </button>
+          <button onClick={() => deleteTable(index)} className={"px-4 py-2 bg-red-500 text-white font-bold hover:bg-red-700 rounded w-1/2"}>
+            Delete Table
+          </button>
+          <button onClick={handleCancel} className={styles.button}>
+            Close
+          </button>
+        </div>
       </div>
     </div>
   )
