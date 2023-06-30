@@ -89,7 +89,9 @@ export default function ManageTableSeats() {
       };
       setTables(updatedTables);
 
-      guests.guests[selectedRow].table = parseInt(index)
+      const updatedGuests = { ...guests }
+      updatedGuests.guests[selectedRow.toString()].table = parseInt(index)
+      setGuests(updatedGuests)
 
       setSelectedRow(null);
     }
@@ -164,8 +166,8 @@ export default function ManageTableSeats() {
   }
 
   useEffect(() => {
-    console.log(tables)
-  },[tables])
+    console.log(guests)
+  },[guests])
 
   const removeTable = (index) => {
     //reduceGuestsTable(index)
