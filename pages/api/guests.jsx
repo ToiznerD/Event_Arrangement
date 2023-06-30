@@ -7,6 +7,7 @@ export default async function handler(req, res) {
     if (snapshot.exists()) {
         res.statusCode = 200
         res.json(snapshot.val())
+        console.log(snapshot.val())
     }
     else {
         console.log("FAIL")

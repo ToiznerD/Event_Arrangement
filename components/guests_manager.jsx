@@ -33,7 +33,7 @@ export default function GuestsManager({data}) {
         let res = await response.json();
 
         setGuests(res)
-        setKey(res.guests !== null ? res.guests.key : 0)
+        setKey(res.guests !== null ? res.guests.key+1 : 0)
       }
     }
     fetchData()
@@ -49,7 +49,7 @@ export default function GuestsManager({data}) {
 
   const handleConfirmDialog = (data) => {
     // Validate the entered data if needed
-  
+    
     const newGuest = {
       name: data.name,
       amount: parseInt(data.amount),
@@ -59,7 +59,7 @@ export default function GuestsManager({data}) {
   
     const updatedGuests = {
       ...guests,
-      guests: { ...guests.guests, [key.toString()]: newGuest, key: key+1 },
+      guests: { ...guests.guests, [key.toString()]: newGuest, key: key },
       amount: guests.amount + parseInt(data.amount),
     };
     setGuests(updatedGuests);
@@ -106,7 +106,8 @@ export default function GuestsManager({data}) {
     }
   }
   
-
+  console.log('guests:')
+    console.log(guests)
   return (
     <Layout title={title}>
       <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 max-h-[500px] scrollbar-track-gray-100">
