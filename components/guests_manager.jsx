@@ -122,7 +122,8 @@ export default function GuestsManager({data}) {
             {guests.guests !== undefined && Object.entries(guests.guests).map((entry) => {
               let guest = entry[1]
               let index = entry[0]
-              
+              console.log(guest)
+              if(index === '0') return
               if (index === 'key') return
               return (
                 <tr className={"text-gray-600 my-4 md:text-2xl"} key={index}>

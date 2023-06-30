@@ -7,8 +7,8 @@ import NewTableDialog from "./new_table_dialog";
 
 export default function ManageTableSeats() {
     const [selectedRow, setSelectedRow] = useState(null)
-  const [guests, setGuests] = useState({ guests: {}, amount: 0})
-    const [tables, setTables] = useState({ tables: [], amount: 0 })
+    const [guests, setGuests] = useState({ guests: {}, amount: 0})
+    const [tables, setTables] = useState({tables: {}, amount: 0})
     const manage_table_seats = "Manage Tables Seats"
     const parentRef = useRef(null);
     const [parentWidth, setParentWidth] = useState(0);
@@ -73,23 +73,23 @@ export default function ManageTableSeats() {
   const addGuest = (index) => {
     if (selectedRow) {
       if (
-        tables[index].current_seats + guests.guests[selectedRow].amount >
-        tables[index].max_seats
+        tables.tables[index].current_seats + guests.guests[selectedRow].amount >
+        tables.tables[index].max_seats
       ) {
         alert("Table is full");
         return;
       }
 
-    if (selectedRow !== null && !tables[index].guests.includes(selectedRow)) {
-      const updatedTables = [...tables];
-      updatedTables[index] = {
-        ...updatedTables[index],
-        guests: [...updatedTables[index].guests, selectedRow],
-        current_seats: updatedTables[index].current_seats + guests.guests[selectedRow].amount,
+    if (selectedRow !== null && tables.tables[index].guests !== undefined && !tables.tables[index].guests.includes(selectedRow)) {
+      const updatedTables = { ...tables };
+      updatedTables.tables[index] = {
+        ...updatedTables.tables[index],
+        guests: [...updatedTables.tables[index].guests, selectedRow],
+        current_seats: updatedTables.tables[index].current_seats + guests.guests[selectedRow].amount,
       };
       setTables(updatedTables);
 
-      guests.guests[selectedRow].table = index
+      guests.guests[selectedRow].table = parseInt(index)
 
       setSelectedRow(null);
     }
@@ -97,10 +97,12 @@ export default function ManageTableSeats() {
 };
 
   const removeGuest = (tableNum, guestID) => {
-    if(guestID !== null) {
-      tables[tableNum].guests = tables[tableNum].guests.filter(element => element !== parseInt(guestID))
-      tables[tableNum].current_seats -= guests.guests[guestID].amount
+    if (guestID !== null) {
+      const updatedTables = { ...tables }
 
+      updatedTables.tables[tableNum].guests = updatedTables.tables[tableNum].guests.filter(element => element !== guestID)
+      updatedTables.tables[tableNum].current_seats -= guests.guests[guestID].amount
+      setTables(updatedTables);
       const updatedGuests = { ...guests }
       updatedGuests.guests[guestID].table = 0
       setGuests(updatedGuests)
@@ -109,9 +111,9 @@ export default function ManageTableSeats() {
 
   const handleTableCoordinatesUpdate = (index, coordinates) => {
     setTables((prevTables) => {
-      const updatedTables = [...prevTables]
-      updatedTables[index] = {
-        ...updatedTables[index],
+      const updatedTables = { ...prevTables }
+      updatedTables.tables[index] = {
+        ...updatedTables.tables[index],
         x: coordinates.x,
         y: coordinates.y
       };
@@ -154,7 +156,11 @@ export default function ManageTableSeats() {
       x: 0,
       y: 0
     };
-    setTables([...tables, newTable]);
+    
+    const updatedTables = { ...tables }
+    updatedTables.tables[updatedTables.amount + 1] = newTable
+    updatedTables.amount += 1
+    setTables(updatedTables);
   }
 
   useEffect(() => {
@@ -162,13 +168,14 @@ export default function ManageTableSeats() {
   },[tables])
 
   const removeTable = (index) => {
-    reduceGuestsTable(index)
+    //reduceGuestsTable(index)
     setTables((prevTables) => {
-      const updatedTables = [...prevTables]
-      updatedTables[index].guests.forEach(element => {
+      const updatedTables = {...prevTables}
+      updatedTables.tables[index].guests.forEach(element => {
         removeGuest(index,element)
       })
-      updatedTables.splice(index, 1);
+      delete updatedTables.tables[index]
+      updatedTables.amount -= 1
       return updatedTables;
     })
   }
@@ -193,64 +200,16 @@ export default function ManageTableSeats() {
     return (
       <>
         <Layout title={manage_table_seats} w="75vw">
-            <div className="flex justify-between relative">
-                <div ref={parentRef} className="w-[70%] max-h-[500px]">
-                  {Array.isArray(tables) &&
-                      tables.map((table, index) => {
-                        if (table === null) return null;
-                        const x = (parentWidth / 100) * table.x;
-                        const y = (parentHeight / 100) * table.y;
-                        return (
-                          <RoundTableComponent
-                            key={index}
-                            table={table}
-                            removeGuest={removeGuest}
-                            guests={guests}
-                            index={index}
-                            addGuest={() => addGuest(index)}
-                            x={(parentWidth / 100) * table.x}
-                            y={(parentHeight / 100) * table.y}
-                            onUpdateCoordinates={(coordinates) => handleTableCoordinatesUpdate(index, coordinates)
-                            }
-                          />
-                        );
-                      })}
-                </div>
-                <div className=" w-[30%] h-[500px] overflow-y-auto">
-                    <table className="w-full border-gray-500 border-4">
-                        <thead>
-                            <tr>
-                                <th className={styles.td}>Name</th>
-                                <th className={styles.td}>Amount</th>
-                                <th className={styles.td}>Category</th>
-                                <th className={styles.td} >Table</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                          {guests !== null && Object.entries(guests.guests).map((entry) => {
-                            let index = entry[0]
-                            let guest = entry[1]
-                            if (guest === null)
-                                return null
-                            return(
-                                <tr key={index} onClick={() => handleRowClick(index)} className={selectedRow === index ? styles.selectedRow : guest.table !== 0 ? styles.normalRowDisabled : styles.normalRow}>
-                                    <td className={styles.td}>{guest.name}</td>
-                                    <td className={styles.td}>{guest.amount}</td>
-                                    <td className={styles.td}>{guest.category}</td>
-                                    <td className={styles.td}>{guest.table}</td>
-                                </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
-                </div>
-        </div>
-        <button onClick={() => saveChanges()}>Save</button>
-            </Layout>
           <div className="flex justify-between relative">
-              <div ref={parentRef} className="w-[70%] h-[500px]">
-                {Array.isArray(tables) &&
-                    tables.map((table, index) => {
+              <div ref={parentRef} className="w-[70%] max-h-[500px]">
+                {
+                Object.entries(tables.tables).map((entry) => {
+                  let index = entry[0]
+                  let table = entry[1]
+                  console.log('index:')
+                  console.log(index)
+                  console.log('table:')
+                  console.log(table)
                       if (table === null) return null;
                       const x = (parentWidth / 100) * table.x;
                       const y = (parentHeight / 100) * table.y;
@@ -270,23 +229,25 @@ export default function ManageTableSeats() {
                       );
                     })}
               </div>
-              <div className=" w-[30%] h-[full] overflow-y-auto">
+              <div className=" w-[30%] max-h-[500px] overflow-y-auto">
                   <table className="w-full border-gray-500 border-4">
                       <thead>
                           <tr>
-                              <th className={styles.td}>Name</th>
-                              <th className={styles.td}>Amount</th>
-                              <th className={styles.td}>Category</th>
-                              <th className={styles.td} >Table</th>
+                              <td className={styles.topTD}>Name</td>
+                              <td className={styles.topTD}>Amount</td>
+                              <td className={styles.topTD}>Category</td>
+                              <td className={styles.topTD} >Table</td>
                           </tr>
                       </thead>
                       <tbody>
-                      {guests !== null && guests.guests.map((guest, index) => {
+                      {guests !== null && Object.entries(guests.guests).map((entry) => {
+                        let index = entry[0]
+                        let guest = entry[1]
                       if (guest === null)
                           return null
                       return(
                           <tr key={index} onClick={() => handleRowClick(index)} className={selectedRow === index ? styles.selectedRow : guest.table !== 0 ? styles.normalRowDisabled : styles.normalRow}>
-                              <td className={styles.td}>{guest.name}</td>
+                              <td className={styles.normalTD}>{guest.name}</td>
                               <td className={styles.td}>{guest.amount}</td>
                               <td className={styles.td}>{guest.category}</td>
                               <td className={styles.td}>{guest.table}</td>

@@ -3,7 +3,7 @@ import { styles } from '../utils/style';
 
 export default function TableDialog({ onCancel, subject, index, guestsInTable, removeGuest, removeTable }) {
   const [selectedRow, setSelectedRow] = useState(null)
-  const [guests, updateGuests] = useState(guestsInTable)
+  const [guests, updateGuests] = useState(guestsInTable())
 
   const handleRowClick = (rowId) => {
     if(rowId === selectedRow)
@@ -28,7 +28,7 @@ export default function TableDialog({ onCancel, subject, index, guestsInTable, r
     // Call the onCancel callback
     onCancel()
   }
-
+  console.log(guests)
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-10">
       <div className="bg-white p-6 rounded-lg">
