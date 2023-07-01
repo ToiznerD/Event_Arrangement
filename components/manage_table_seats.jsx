@@ -80,31 +80,39 @@ export default function ManageTableSeats() {
         return;
       }
 
-    if (selectedRow !== null && tables.tables[index].guests !== undefined && !tables.tables[index].guests.includes(selectedRow)) {
-      const updatedTables = { ...tables };
-      updatedTables.tables[index] = {
-        ...updatedTables.tables[index],
-        guests: [...updatedTables.tables[index].guests, selectedRow],
-        current_seats: updatedTables.tables[index].current_seats + guests.guests[selectedRow].amount,
-      };
-      setTables(updatedTables);
+      if (selectedRow !== null) {
+        let Guests = tables.tables[index].guests
+        if (Guests === undefined) {
+          Guests = []
+        }
+        
+        if (!Guests.includes(selectedRow)) {
+          const updatedTables = { ...tables };
+          updatedTables.tables[index] = {
+            ...updatedTables.tables[index],
+            guests: [...Guests, selectedRow],
+            current_seats: updatedTables.tables[index].current_seats + guests.guests[selectedRow].amount,
+          };
+          setTables(updatedTables);
 
-      const updatedGuests = { ...guests }
-      updatedGuests.guests[selectedRow.toString()].table = parseInt(index)
-      setGuests(updatedGuests)
+          const updatedGuests = { ...guests }
+          updatedGuests.guests[selectedRow.toString()].table = parseInt(index)
+          setGuests(updatedGuests)
 
-      setSelectedRow(null);
-    }
+          setSelectedRow(null);
+        }
+      }
   }
 };
 
-  const removeGuest = (tableNum, guestID) => {
+  const removeGuest = (tableNum, id) => {
+    let guestID = parseInt(id)
     if (guestID !== null) {
       const updatedTables = { ...tables }
-
       updatedTables.tables[tableNum].guests = updatedTables.tables[tableNum].guests.filter(element => element !== guestID)
       updatedTables.tables[tableNum].current_seats -= guests.guests[guestID].amount
       setTables(updatedTables);
+      
       const updatedGuests = { ...guests }
       updatedGuests.guests[guestID].table = 0
       setGuests(updatedGuests)
@@ -243,7 +251,7 @@ export default function ManageTableSeats() {
                       </thead>
                       <tbody>
                       {guests !== null && Object.entries(guests.guests).map((entry) => {
-                        let index = entry[0]
+                        let index = parseInt(entry[0])
                         let guest = entry[1]
                       if (guest === null)
                           return null

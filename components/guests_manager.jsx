@@ -16,12 +16,13 @@ export default function GuestsManager({data}) {
   const [guests, setGuests] = useState({ guests: {}, amount: 0});
   const [editingGuestIndex, setEditingGuestIndex] = useState(null);
   const [key, setKey] = useState(0)
+  const [tables, setTables] = useState({tables: {}, amount: 0})
 
   useEffect(() => {
     
     const user = JSON.parse(localStorage.getItem('user'))
     async function fetchData() {
-      const response = await fetch('/api/guests', {
+      let response = await fetch('/api/guests', {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -34,6 +35,20 @@ export default function GuestsManager({data}) {
 
         setGuests(res)
         setKey(res.guests !== null ? res.guests.key+1 : 0)
+      }
+
+      //Get user's tables info
+      response = await fetch('/api/tables', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ userId: user.userId })
+      })
+
+      if (response.ok) {
+        let res = await response.json();
+        setTables(res)
       }
     }
     fetchData()
@@ -59,7 +74,7 @@ export default function GuestsManager({data}) {
   
     const updatedGuests = {
       ...guests,
-      guests: { ...guests.guests, [key.toString()]: newGuest, key: key },
+      guests: { ...guests.guests, [key]: newGuest, key: key },
       amount: guests.amount + parseInt(data.amount),
     };
     setGuests(updatedGuests);
@@ -82,27 +97,42 @@ export default function GuestsManager({data}) {
 
 
   const deleteGuest = (index) => {
-    const amt = guests['guests'][index].amount
+    const amt = guests.guests[index].amount
+    let tableIndex = guests.guests[index].table
     const updatedGuests = { ...guests };
     delete updatedGuests.guests[index]
     updatedGuests.amount -= amt
     setGuests(updatedGuests);
+
+    const updatedTables = { ...tables }
+    updatedTables.tables[tableIndex].guests = updatedTables.tables[tableIndex].guests.filter(element => element !== index)
+    updatedTables.tables[tableIndex].current_seats -= amt
+    setTables(updatedTables)
   };
 
   const saveChanges = async () => {
     const user = JSON.parse(localStorage.getItem('user'))
-    const response = await fetch('/api/update_guests', {
+    let response = await fetch('/api/update_table', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ userId: user.userId, guests: guests})
+      body: JSON.stringify({ userId: user.userId, tables: tables })
     })
 
     if (response.ok) {
-      let res = await response.json();
-      console.log(res)
-      dispatch({type: "SET_ERROR", param: "Changes have been saved successfully"})
+      response = await fetch('/api/update_guests', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ userId: user.userId, guests: guests })
+      })
+
+      if (response.ok) {
+        let res = await response.json();
+        alert('SUCCESS BITCHES')
+      }
     }
   }
   
