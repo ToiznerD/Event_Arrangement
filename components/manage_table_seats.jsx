@@ -112,7 +112,7 @@ export default function ManageTableSeats() {
       updatedTables.tables[tableNum].guests = updatedTables.tables[tableNum].guests.filter(element => element !== guestID)
       updatedTables.tables[tableNum].current_seats -= guests.guests[guestID].amount
       setTables(updatedTables);
-      
+
       const updatedGuests = { ...guests }
       updatedGuests.guests[guestID].table = 0
       setGuests(updatedGuests)
@@ -181,7 +181,7 @@ export default function ManageTableSeats() {
     //reduceGuestsTable(index)
     setTables((prevTables) => {
       const updatedTables = {...prevTables}
-      updatedTables.tables[index].guests.forEach(element => {
+      updatedTables.tables[index].guests !== undefined && updatedTables.tables[index].guests.forEach(element => {
         removeGuest(index,element)
       })
       delete updatedTables.tables[index]
