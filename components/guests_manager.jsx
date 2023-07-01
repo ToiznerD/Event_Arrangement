@@ -105,7 +105,7 @@ export default function GuestsManager({data}) {
     setGuests(updatedGuests);
 
     const updatedTables = { ...tables }
-    updatedTables.tables[tableIndex].guests = updatedTables.tables[tableIndex].guests.filter(element => element !== index)
+    updatedTables.tables[tableIndex].guests = updatedTables.tables[tableIndex].guests.filter(element => element !== parseInt(index))
     updatedTables.tables[tableIndex].current_seats -= amt
     setTables(updatedTables)
   };
