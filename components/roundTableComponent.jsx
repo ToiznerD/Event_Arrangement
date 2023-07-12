@@ -63,7 +63,7 @@ const RoundTableComponent = ({ table, addGuest, index, guests, removeGuest, x, y
   return (
     <>
     <Draggable onStart={handleMouseDown} onDrag={handleMouseMove} onStop={handleMouseUp} bounds="parent" position={{ x, y }}>
-      <div ref={divRef} onDoubleClick={handleDoubleClick} className="cursor-pointer absolute flex flex-col items-center justify-center font-bold my-1">
+      <div ref={divRef} onDoubleClick={handleDoubleClick} className="cursor-pointer absolute flex flex-col items-center justify-center font-bold mb-3">
           <Image src={roundTable} alt="pic" style={{ width: '100px', height: '100px' }}/>
           <div className="absolute mb-1">
             {table.current_seats}/{table.max_seats}
