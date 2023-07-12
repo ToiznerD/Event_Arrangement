@@ -39,7 +39,7 @@ export default function NewTableDialog({ onCancel, addTable }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-10">
       <div className="bg-white p-6 rounded-lg">
-        <h2 className="text-3xl font-semibold mb-4 text-center">Table Details</h2>
+        <h2 className="text-4xl font-semibold mb-4 text-center">Table Details</h2>
         <form onSubmit={handleSubmit}>
           <div className={styles.subTitle}>Table category:</div>
           <input
@@ -73,7 +73,7 @@ export default function NewTableDialog({ onCancel, addTable }) {
             </label>
           </div>
 
-          <div className="flex w-[420px] gap-5 mt-7">
+          <div className="flex w-[100%] gap-5 mt-7">
             <button type="submit" className={styles.button}>
               Add table
             </button>

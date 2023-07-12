@@ -3,6 +3,8 @@ import Layout from "./layout";
 import { styles } from '../utils/style';
 import RoundTableComponent from './roundTableComponent';
 import NewTableDialog from "./new_table_dialog";
+import MessageDialog from "./message_dialog";
+
 
 
 export default function ManageTableSeats() {
@@ -44,6 +46,9 @@ export default function ManageTableSeats() {
       if (response.ok) {
         let res = await response.json();
         setTables(res)
+        console.log(res)
+        console.log(tables)
+        console.log(tables.tables)
       }
       
 
@@ -106,16 +111,18 @@ export default function ManageTableSeats() {
 };
 
   const removeGuest = (tableNum, id) => {
-    let guestID = parseInt(id)
-    if (guestID !== null) {
-      const updatedTables = { ...tables }
-      updatedTables.tables[tableNum].guests = updatedTables.tables[tableNum].guests.filter(element => element !== guestID)
-      updatedTables.tables[tableNum].current_seats -= guests.guests[guestID].amount
-      setTables(updatedTables);
+    if(tables.tables[tableNum].guests.length !== 0 && id) {
+      let guestID = parseInt(id)
+      if (guestID !== null) {
+        const updatedTables = { ...tables }
+        updatedTables.tables[tableNum].guests = updatedTables.tables[tableNum].guests.filter(element => element !== guestID)
+        updatedTables.tables[tableNum].current_seats -= guests.guests[guestID].amount
+        setTables(updatedTables);
 
-      const updatedGuests = { ...guests }
-      updatedGuests.guests[guestID].table = 0
-      setGuests(updatedGuests)
+        const updatedGuests = { ...guests }
+        updatedGuests.guests[guestID].table = 0
+        setGuests(updatedGuests)
+      }
     }
   }
 
@@ -153,6 +160,7 @@ export default function ManageTableSeats() {
       if (response.ok) {
         let res = await response.json();
         alert('SUCCESS BITCHES')
+        console.log(tables)
       }
     }
   }
@@ -168,6 +176,8 @@ export default function ManageTableSeats() {
     };
     
     const updatedTables = { ...tables }
+    if(!updatedTables.tables)
+      updatedTables.tables = {}
     updatedTables.tables[updatedTables.amount + 1] = newTable
     updatedTables.amount += 1
     setTables(updatedTables);
@@ -209,11 +219,11 @@ export default function ManageTableSeats() {
 
     return (
       <>
-        <Layout title={manage_table_seats} w="75vw">
+        <Layout title={manage_table_seats} w="75vw" back='dashboard'>
           <div className="flex justify-between relative">
-              <div ref={parentRef} className="w-[70%] max-h-[500px]">
+              <div ref={parentRef} className="w-[70%] max-h-[500px] flex flex-col">
                 {
-                Object.entries(tables.tables).map((entry) => {
+                tables.tables && Object.entries(tables.tables).map((entry) => {
                   let index = entry[0]
                   let table = entry[1]
                   console.log('index:')
@@ -238,9 +248,14 @@ export default function ManageTableSeats() {
                         />
                       );
                     })}
-              </div>
-              <div className=" w-[30%] max-h-[500px] overflow-y-auto">
-                  <table className="w-full border-gray-500 border-4">
+                    <div className="m-5 flex items-center justify-center mt-auto">
+                      <button onClick={() => saveChanges()} className={"px-4 py-2 bg-green-500 text-white font-bold hover:bg-green-700 rounded w-[150px]"}>Save Changes</button>
+                      <button className="px-4 py-2 bg-orange-500 text-white font-bold hover:bg-orange-700 rounded w-[150px] ml-5" onClick={() => handleOpenDialog()} >Add table</button>
+                    </div>
+                </div>
+              
+              <div className="min-w-[30%] max-h-[500px] overflow-y-auto overflow-x-hidden">
+                  <table className="w-full border-gray-500 border-4 text-center">
                       <thead>
                           <tr>
                               <td className={styles.topTD}>Name</td>
@@ -268,9 +283,7 @@ export default function ManageTableSeats() {
                   </table>
               </div>
           </div>
-          <button onClick={() => saveChanges()}>Save</button>
-          {/* <button className="ml-5" onClick={() => addTable()}>Add table</button> */}
-          <button className="ml-5" onClick={() => handleOpenDialog()}>Add table</button>
+          
         </Layout>
         {isDialogOpen && <NewTableDialog addTable={addTable} onCancel={handleCancelDialog}/>}
         </>

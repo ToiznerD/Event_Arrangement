@@ -7,10 +7,12 @@ import removeImg from '../assets/remove.png';
 import confirm from '../assets/confirm.png';
 import InputDialog from "./input_dialog";
 import Image from 'next/image';
+import MessageDialog from "./message_dialog";
 
 export default function GuestsManager({data}) {
   const { state, dispatch } = useContext(Context);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const title = "Guests Manager";
   const editGuest = useRef()
   const [guests, setGuests] = useState({ guests: {}, amount: 0});
@@ -103,44 +105,51 @@ export default function GuestsManager({data}) {
     delete updatedGuests.guests[index]
     updatedGuests.amount -= amt
     setGuests(updatedGuests);
-
-    const updatedTables = { ...tables }
-    updatedTables.tables[tableIndex].guests = updatedTables.tables[tableIndex].guests.filter(element => element !== parseInt(index))
-    updatedTables.tables[tableIndex].current_seats -= amt
-    setTables(updatedTables)
+    if (tableIndex !== 0) {
+      const updatedTables = { ...tables }
+      updatedTables.tables[tableIndex].guests = updatedTables.tables[tableIndex].guests.filter(element => element !== parseInt(index))
+      updatedTables.tables[tableIndex].current_seats -= amt
+      setTables(updatedTables)
+    }
   };
 
   const saveChanges = async () => {
     const user = JSON.parse(localStorage.getItem('user'))
-    let response = await fetch('/api/update_table', {
+
+    let response = await fetch('/api/update_guests', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ userId: user.userId, tables: tables })
+      body: JSON.stringify({ userId: user.userId, guests: guests })
     })
 
     if (response.ok) {
-      response = await fetch('/api/update_guests', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ userId: user.userId, guests: guests })
-      })
+      if (tables) {
+        response = await fetch('/api/update_table', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ userId: user.userId, tables: tables })
+        })
 
-      if (response.ok) {
-        let res = await response.json();
-        alert('SUCCESS BITCHES')
+        if (response.ok) {
+          let res = await response.json();
+        }
+        else {
+          alert("ERROR WITH TABLES")
+        }
       }
     }
+    setIsConfirmDialogOpen(true)
   }
   
   console.log('guests:')
     console.log(guests)
   return (
-    <Layout title={title}>
-      <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 max-h-[500px] scrollbar-track-gray-100">
+    <Layout title={title} back='dashboard'>
+      <div className="overflow-y-auto mx-auto scrollbar-thin scrollbar-thumb-gray-300 max-h-[500px] scrollbar-track-gray-100">
         <table>
           <thead>
             <tr className="text-gray-600 mt-2 md:text-2xl font-bold">
@@ -154,7 +163,7 @@ export default function GuestsManager({data}) {
               let guest = entry[1]
               let index = entry[0]
               console.log(guest)
-              if(index === '0') return
+              // if(index === '0') return
               if (index === 'key') return
               return (
                 <tr className={"text-gray-600 my-4 md:text-2xl"} key={index}>
@@ -185,10 +194,11 @@ export default function GuestsManager({data}) {
       <div className="flex flex-col justify-center">
         <div className={styles.subTitle + " mt-5 mx-auto"}>Total Amount: {guests.amount}</div>
         <button onClick={handleOpenDialog} className={styles.button + " mx-auto"}>Add Guest</button>
-        <button onClick={saveChanges} className={"bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 mt-2 rounded" + " w-[200px] mx-auto text-center"}>Save Changes</button>
+        <button onClick={saveChanges} className={styles.button + " mx-auto my-2"}>Save Changes</button>
 
       </div>
       {isDialogOpen && <InputDialog onConfirm={handleConfirmDialog} onCancel={handleCancelDialog} />}
+      {isConfirmDialogOpen && <MessageDialog type="confirm" message="The guest list has been updated successfully!" onCancel={() => setIsConfirmDialogOpen(false)} />}
       
       </Layout>
   );

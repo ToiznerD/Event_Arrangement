@@ -12,9 +12,9 @@ export const styles = {
   buttonLogin:
     "bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded w-[250px] h-[60px] m-5",
   button:
-    "bg-gradient-to-r  from-blue-400 to-blue-300  hover:from-blue-500 hover:to-blue-400 text-white font-bold py-2 px-4 rounded md:w-[200px]",
+    "bg-gradient-to-r from-blue-400 to-blue-300  hover:from-blue-500 hover:to-blue-400 text-white w-[150px] font-bold py-2 px-4 rounded md:w-[200px]",
   buttonReg:
-    "bg-gradient-to-r  from-blue-400 to-blue-300  hover:from-blue-500 hover:to-blue-500 text-white font-bold py-2 px-4 rounded w-[200px] mx-auto",
+    "bg-gradient-to-r  from-blue-400 to-blue-300  hover:from-blue-500 hover:to-blue-500 text-white font-bold py-2 px-4 rounded md:w-[200px] mx-auto",
   navigationLink:
     "relative text-white hover:bg-gray-400 transition duration-500 rounded-md md:text-2xl text-lg cursor-pointer",
   navigationBar:

@@ -11,11 +11,10 @@ export default async function register(req, res) {
 
         const newUserRef = database.ref('Users').child(id.toString());
         const newUser = {
-            id: id,
             username: username,
             password: password,
             email: email,
-            eventDate: eventDate
+            date: eventDate
         };
 
         await newUserRef.set(newUser);

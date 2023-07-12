@@ -4,7 +4,8 @@ import Layout from "./layout"
 import { styles } from "../utils/style"
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-
+import backButton from '../assets/back.png'
+import Image from 'next/image'
 export default function Register() {
     const { state, dispatch } = useContext(Context)
     const nameRef = useRef()
@@ -29,7 +30,7 @@ export default function Register() {
         const formattedDate = `${day}/${month}/${year}`
 
         if (cpassword !== password) {
-            dispatch({ type: 'SET_ERROR', param: 'Password confirmation incorrect' })
+            dispatch({ type: 'SET_ERROR', param: 'Passwords does not match!' })
             return
         }
         try {
@@ -51,8 +52,8 @@ export default function Register() {
         }
     }
     return (
-        <Layout title="Register">
-                <div>
+        <Layout title="Register" back='login'>
+            <div>
                 <form onSubmit={handleSubmit}>
                     <div className={styles.subTitle}>Username</div>
                     <div><input type="text" className={styles.textInput} required ref={nameRef} /></div>
