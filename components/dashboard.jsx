@@ -36,6 +36,7 @@ export default function Dashboard() {
   return (
     <Layout title={title} w="600px">
       <div className="mt-4 mb-2 flex flex-col items-center">
+        <div className={styles.Title}>Welcome back {user.username}!</div>
         <div className={styles.subTitle}>Event date: {user.date}</div>
         <div className={styles.subTitle}>Email: { user.email }</div>
         <div className={styles.subTitle}>Guests Amount: {guestAmount}</div>

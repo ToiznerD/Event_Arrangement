@@ -33,10 +33,13 @@ const Dropdown = () => {
         <span className={`ml-2 ${isOpen ? "rotate-180" : ""}`}>▼</span>
       </button>
       {isOpen && (
-        <div className="absolute text-white rounded-md shadow-lg">
-                  <div className="text-white hover:font-bold cursor-pointer bg-blue-300 rounded-b-lg p-2" onClick={(e)=>logout(e)}>
-                            Logout
-                  </div>
+        <div className="absolute text-white z-10 rounded-md shadow-lg">
+            <div className="text-white hover:font-bold cursor-pointer bg-blue-300  p-2" onClick={() => dispatch({type: "SET_VIEW", param: "update_profile"})}>
+                      Update Profile
+            </div>
+            <div className="text-white hover:font-bold cursor-pointer bg-blue-300 rounded-b-lg p-2" onClick={(e)=>logout(e)}>
+                      Logout
+            </div>
         </div>
       )}
     </div>

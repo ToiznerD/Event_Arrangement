@@ -219,7 +219,7 @@ export default function ManageTableSeats() {
 
     return (
       <>
-        <Layout title={manage_table_seats} w="75vw">
+        <Layout title={manage_table_seats} w="75vw" back='dashboard'>
           <div className="flex justify-between relative">
               <div ref={parentRef} className="w-[70%] max-h-[500px] flex flex-col">
                 {

@@ -33,7 +33,7 @@ const handleSubmit = async (e) => {
       dispatch({ type: "SET_VIEW", param: "dashboard" })
     }
     else {
-      res = await response.json()
+      let res = await response.json()
       dispatch({type: "SET_ERROR", param: res.message})
     }
 

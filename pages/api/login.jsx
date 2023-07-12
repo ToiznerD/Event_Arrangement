@@ -12,6 +12,11 @@ export default async function handler(req, res) {
           res.statusCode = 200;
           res.json( user );
         }
+        else {
+          // Invalid credentials
+          res.statusCode = 401
+          res.json({success: false, message: "Invalid credentials"})
+        }
     } else {
       // Invalid credentials
       res.statusCode = 401

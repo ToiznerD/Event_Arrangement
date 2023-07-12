@@ -8,9 +8,9 @@ import Head from 'next/head'
 import Error from './error'
 import Image from 'next/image'
 import hamburger from '../assets/burger.png'
-import table from '../assets/roundTable.png'
+import backButton from '../assets/back.png'
 
-export default function Layout({ children, title, w}) {
+export default function Layout({ children, title, w, back}) {
     const { state, dispatch } = useContext(Context)
     const router = useRouter()
     const [isUser, setIsUser] = useState(false)
@@ -86,10 +86,13 @@ export default function Layout({ children, title, w}) {
                                     <Link href="contact" className={styles.navigationLink}>Contact</Link>
                                 </li>
                                 <li className={isMenuOpen ? 'block md:hidden' : 'hidden'}>
-                                    <div onClick={handleClick} className={styles.navigationLink}>{isUser ? user.username : 'Login'}</div>
+                                    <div onClick={handleClick} className={styles.navigationLink}>{isUser ? 'My Account' : 'Login'}</div>
                                 </li>
-                                    <li className={isMenuOpen ? 'block md:hidden' : 'hidden'}>
-                                        {isUser && <span onClick={() => logout()} className="text-white text-lg">Logout</span>}
+                                <li className={isMenuOpen ? 'block md:hidden' : 'hidden'}>
+                                    {isUser && <span onClick={() => dispatch({type: "SET_VIEW", param: "update_profile"})} className={styles.navigationLink}>Update Profile</span>}
+                                </li>
+                                <li className={isMenuOpen ? 'block md:hidden' : 'hidden'}>
+                                        {isUser && <span onClick={() => logout()} className={styles.navigationLink}>Logout</span>}
                                 </li>
                             </ul>
 
@@ -97,14 +100,16 @@ export default function Layout({ children, title, w}) {
                     </div>
                     <div id="yaniv" className="md:block hidden justify-end">
                         <div className="relative inline-flex">
-                            <div onClick={handleClick} className={styles.navigationLink}>{isUser ? user.username : 'Login'}</div>
+                            <div onClick={handleClick} className={styles.navigationLink}>{isUser ? 'My Account' : 'Login'}</div>
                             {isUser && <Dropdown className="absolute mt-1 left-full"/>}
                         </div>
                    </div>
                 </nav>
 
                 <div className="px-1">
+                    {back && <Image src={backButton} onClick={() => dispatch({ type: 'SET_VIEW', param: back })} alt="back" className="py-2 md:hidden  w-[32px] h-auto md:w-[40px] md:h-auto" />}
                     {children}
+                    {back && <Image src={backButton} onClick={() => dispatch({type:'SET_VIEW', param: back}) } alt="back" className="py-2 hidden md:block w-[32px] h-auto md:w-[40px] md:h-auto" />}
                 </div>
                 {/*{state.view !== 'home' && <div class="mt-4"><button class={styles.link} onClick={() => { dispatch({ type: "SET_VIEW", param: "home" }); state.view !== "register" ? dispatch({type: "SET_USER", param: null}) : null}}>back home</button></div>}*/}
                     {state.error !== '' && <Error />}
