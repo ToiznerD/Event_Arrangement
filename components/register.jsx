@@ -4,8 +4,8 @@ import Layout from "./layout"
 import { styles } from "../utils/style"
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import backButton from '../assets/back.png'
-import Image from 'next/image'
+import  MessageDialog  from './message_dialog'
+
 export default function Register() {
     const { state, dispatch } = useContext(Context)
     const nameRef = useRef()
@@ -14,6 +14,8 @@ export default function Register() {
     const emailRef = useRef()
     const today = new Date();
     const dateRef = useRef()
+    const [message, setMessage] = useState("")
+    const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
     const [selectedDate, setSelectedDate] = useState(null)
 
@@ -42,18 +44,23 @@ export default function Register() {
             body: JSON.stringify({ username: username, password: password, email: email, eventDate: formattedDate})
             })
             let res = await response.json()
+            setMessage(res.message)
+            setIsConfirmDialogOpen(true)
+            //dispatch({ type: 'SET_VIEW', param: 'login'})
             
-            alert(res.message)
-            dispatch({ type: 'SET_VIEW', param: 'login'})
+            nameRef.current.value = ""
+            passwordRef.current.value = ""
+            cpasswordRef.current.value = ""
+            emailRef.current.value = ""
+            setSelectedDate(null)
             
-
         } catch (error) {
             console.error(error);
         }
     }
     return (
         <Layout title="Register" back='login'>
-            <div>
+            <div className="ml-3">
                 <form onSubmit={handleSubmit}>
                     <div className={styles.subTitle}>Username</div>
                     <div><input type="text" className={styles.textInput} required ref={nameRef} /></div>
@@ -69,7 +76,8 @@ export default function Register() {
                         <button type="submit" className={styles.buttonReg}>Register</button>
                     </div>
                 </form>
-                </div>
+            </div>
+            {isConfirmDialogOpen && <MessageDialog type="confirm" message={message} onCancel={() => setIsConfirmDialogOpen(false)} />}
         </Layout>
     );
 }

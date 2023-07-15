@@ -19,14 +19,14 @@ export const styles = {
     "relative text-white hover:bg-gray-400 transition duration-500 rounded-md md:text-2xl text-lg cursor-pointer",
   navigationBar:
     "flex items-center justify-between bg-gray-800 p-4 rounded-t-lg",
-  normalRow: "py-2 cursor-pointer bg-gray-300 hover:bg-gray-200",
+  normalRow: "py-2 cursor-pointer bg-gray-300 hover:bg-gray-200 h-[50px]",
   normalRowDisabled:
-    "py-2 pointer-events-none opacity-50 text-grey-200 bg-gray-300",
-  selectedRow: "py-2 cursor-pointer bg-gray-400 font-bold",
+    "py-2 pointer-events-none opacity-50 text-grey-200 bg-gray-300 h-[50px]",
+  selectedRow: "py-2 cursor-pointer bg-gray-400 font-bold h-[50px]",
   td: "py-2 cursor-pointer my-4 text-l",
-  topTD: "py-2 ml-2 font-bold cursor-pointer my-4 text-l",
+  topTD: "py-2 ml-2 font-bold cursor-pointer my-4 text-l h-[50px]",
   topRow: "text-black mt-2 md:text-2xl font-bold",
-  tr: "text-black mt-2 md:text-2xl font-light",
+  tr: "text-black mt-2 md:text-2xl font-light max-h-[50px]",
   layout:
     "border-2 border-white rounded-3xl shadow-lg shadow-slate-500 min-h-[300px] w-screen md:w-[600px] mx-auto overflow-hidden",
   inputField:

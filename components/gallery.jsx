@@ -8,7 +8,7 @@ export default function Gallery() {
 
     return(
         <Layout title="Event Management" w="700px">
-          <Carousel images={['/guests_manager.png', '/myaccount.png', 'drag.gif'] } />
+          <Carousel images={['/guests_manager.png', '/myaccount.png', 'drag.gif', 'add_guest.gif'] } />
         </Layout>
     )
 }
