@@ -16,11 +16,21 @@ export default async function register(req, res) {
             email: email,
             date: eventDate
         };
-
         await newUserRef.set(newUser);
-
         await database.ref('Users/Total').set(id)
 
+        const newUserTableRef = database.ref('Tables').child(id.toString());
+        const newUserTable = {
+            tables: { amount: 0}
+        }
+        await newUserTableRef.set(newUserTable);
+
+        const newUserGuestRef = database.ref('Guests').child(id.toString());
+        const newUserGuest = {
+            guests: {key: 0},
+            amount: 0
+        }
+        await newUserGuestRef.set(newUserGuest);
         res.status(200).json({ message: 'User registered successfully!' });
     } catch (error) {
         console.log(error)

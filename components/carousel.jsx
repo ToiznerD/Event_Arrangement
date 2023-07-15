@@ -21,15 +21,12 @@ const Carousel = ({images}) => {
         centeredSlides={true}
               centeredSlidesBounds={true}
       >
-        <SwiperSlide >
-          <img src={images[0]} className="mx-auto md:ml-[50px] md:w-[600px] md:h-[500px] w-[300px] h-[250px]"  alt="Image 1" />
-        </SwiperSlide>
-        <SwiperSlide>
-        <img src={images[1]} className="mx-auto md:ml-[50px] md:w-[600px] md:h-[500px] w-[300px] h-[250px]" alt="Image 1" />
-        </SwiperSlide>
-        <SwiperSlide>
-        <img src={images[2]} className="mx-auto md:ml-[50px] md:w-[600px] md:h-[500px] w-[300px] h-[250px]" alt="Image 1" />
-        </SwiperSlide>
+        {images.map(image => {
+          return (<SwiperSlide >
+            <img src={image} className="mx-auto md:ml-[50px] md:w-[600px] md:h-[500px] w-[300px] h-[250px]" alt={image} />
+          </SwiperSlide>
+          )
+        })}
       </Swiper>
     </div>
   );

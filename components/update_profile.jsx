@@ -2,9 +2,9 @@ import { useRef, useState, useContext, useEffect } from "react";
 import Context from "../utils/context";
 import Layout from "./layout";
 import { styles } from '../utils/style'
-import { database } from '../utils/firebase'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import MessageDialog from './message_dialog'
 
 export default function UpdateProfile() {
   const { state, dispatch } = useContext(Context);
@@ -17,6 +17,7 @@ export default function UpdateProfile() {
   const dateRef = useRef()
   const [day, month, year] = user.date.split('/')
   const [selectedDate, setSelectedDate] = useState(new Date(year, month - 1, day))
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
   async function handleSubmit(e) {
       e.preventDefault()
@@ -44,7 +45,8 @@ export default function UpdateProfile() {
           })
           let res = await response.json()
           
-          alert(res.message)
+        setIsConfirmDialogOpen(true)
+        
 
           
 
@@ -71,8 +73,10 @@ export default function UpdateProfile() {
             <div className="mt-4 mb-2 flex justify-between items-center">
                 <button type="submit" className={styles.buttonReg}>Update Profile</button>
             </div>
-        </form>
+      </form>
+      {isConfirmDialogOpen && <MessageDialog type="confirm" message="The profile has been updated successfuly!" onCancel={() => setIsConfirmDialogOpen(false)} />}
     </Layout>
+    
   )
 
 
