@@ -37,9 +37,9 @@ export default function Dashboard() {
     <Layout title={title} w="600px">
       <div className="mt-4 mb-2 flex flex-col items-center">
         <div className={styles.Title}>Welcome back {user.username}!</div>
-        <div className={styles.subTitle}>Event date: {user.date}</div>
-        <div className={styles.subTitle}>Email: { user.email }</div>
-        <div className={styles.subTitle}>Guests Amount: {guestAmount}</div>
+        <div className={"md:text-3xl text-2xl text-gray-600 my-5 "}>Event date: {user.date}</div>
+        <div className={"md:text-3xl text-2xl text-gray-600 my-5 "}>Email: { user.email }</div>
+        <div className={"md:text-3xl text-2xl text-gray-600 my-5 "}>Guests Amount: {guestAmount}</div>
       </div>
 
       <div className="mt-4 mb-2 flex justify-between items-center">

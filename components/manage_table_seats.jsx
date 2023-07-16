@@ -17,6 +17,8 @@ export default function ManageTableSeats() {
   const [parentHeight, setParentHeight] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [message, setMessage] = useState("")
+  const [type, setType] = useState("confirm")
   
   useEffect(() => { 
     async function fetchData() {
@@ -82,7 +84,9 @@ export default function ManageTableSeats() {
         tables.tables[index].current_seats + guests.guests[selectedRow].amount >
         tables.tables[index].max_seats
       ) {
-        alert("Table is full");
+        setMessage('Table is full')
+        setType('error')
+        setIsConfirmDialogOpen(true)
         return;
       }
 
@@ -160,6 +164,8 @@ export default function ManageTableSeats() {
 
       if (response.ok) {
         let res = await response.json();
+        setMessage('The table list has been updated successfully')
+        setType('confirm');
         setIsConfirmDialogOpen(true)
         console.log(tables)
       }
@@ -224,7 +230,8 @@ export default function ManageTableSeats() {
         <Layout title={manage_table_seats} w="75vw" back='dashboard'>
           <div className="hidden md:block">
             <div className="flex justify-between relative">
-                <div ref={parentRef} className="w-[70%] h-[500px] flex flex-col">
+              <div className="w-[70%]">
+                <div ref={parentRef} className="w-full h-[500px] flex flex-col">
                   {
                   tables.tables && Object.entries(tables.tables).map((entry) => {
                     let index = entry[0]
@@ -253,12 +260,13 @@ export default function ManageTableSeats() {
                           />
                         );
                       })}
-                      <div className="m-5 flex items-center justify-center mt-auto">
+                      
+                  </div>
+                  <div className="relative flex items-center justify-center mt-auto">
                         <button onClick={() => saveChanges()} className={"px-4 py-2 bg-green-500 text-white font-bold hover:bg-green-700 rounded w-[150px]"}>Save Changes</button>
                         <button className="px-4 py-2 bg-orange-500 text-white font-bold hover:bg-orange-700 rounded w-[150px] ml-5" onClick={() => handleOpenDialog()} >Add table</button>
-                      </div>
-                  </div>
-                
+                </div>
+                </div>
                 <div className="min-w-[30%] max-h-[500px] overflow-y-auto overflow-x-hidden">
                     <table className="w-full border-gray-500 border-4 text-center">
                         <thead>
@@ -292,13 +300,14 @@ export default function ManageTableSeats() {
                 </div>
             </div>
           </div>
-          <div className="block md:hidden">
-            This feature is not supported for mobiles yet.
+          <div className="block md:hidden p-2">
+            <span className={styles.Title} >This feature is not supported for mobiles yet.</span>
+
           </div>
           
         </Layout>
         {isDialogOpen && <NewTableDialog addTable={addTable} onCancel={handleCancelDialog} />}
-        {isConfirmDialogOpen && <MessageDialog type="confirm" message="Table list has been updated successfuly!" onCancel={() => setIsConfirmDialogOpen(false)} />}
+        {isConfirmDialogOpen && <MessageDialog type={type} message={message} onCancel={() => setIsConfirmDialogOpen(false)} />}
         </>
     )
 
