@@ -15,17 +15,17 @@ export default function Register() {
     const today = new Date();
     const dateRef = useRef()
     const [message, setMessage] = useState("")
+    const [type, setType] = useState("confirm")
     const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
     const [selectedDate, setSelectedDate] = useState(null)
-
     async function handleSubmit(e) {
         e.preventDefault()
         let username = nameRef.current.value
         let password = passwordRef.current.value
         let cpassword = cpasswordRef.current.value
         let email = emailRef.current.value
-
+    
         const day = selectedDate.getDate()
         const month = selectedDate.getMonth() + 1
         const year = selectedDate.getFullYear()
@@ -43,17 +43,25 @@ export default function Register() {
             },
             body: JSON.stringify({ username: username, password: password, email: email, eventDate: formattedDate})
             })
-            let res = await response.json()
-            setMessage(res.message)
-            setIsConfirmDialogOpen(true)
-            //dispatch({ type: 'SET_VIEW', param: 'login'})
+            if (response.ok) {
+                let res = await response.json()
+                setMessage(res.message)
+                setType('confirm')
+                setIsConfirmDialogOpen(true)
+                //dispatch({ type: 'SET_VIEW', param: 'login'})
             
-            nameRef.current.value = ""
-            passwordRef.current.value = ""
-            cpasswordRef.current.value = ""
-            emailRef.current.value = ""
-            setSelectedDate(null)
-            
+                nameRef.current.value = ""
+                passwordRef.current.value = ""
+                cpasswordRef.current.value = ""
+                emailRef.current.value = ""
+                setSelectedDate(null)
+            }
+            else {
+                let res = await response.json()
+                setMessage(res.message)
+                setType('error')
+                setIsConfirmDialogOpen(true)
+            }
         } catch (error) {
             console.error(error);
         }
@@ -77,7 +85,7 @@ export default function Register() {
                     </div>
                 </form>
             </div>
-            {isConfirmDialogOpen && <MessageDialog type="confirm" message={message} onCancel={() => setIsConfirmDialogOpen(false)} />}
+            {isConfirmDialogOpen && <MessageDialog type={type} message={message} onCancel={() => setIsConfirmDialogOpen(false)} />}
         </Layout>
     );
 }

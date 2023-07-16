@@ -2,6 +2,7 @@ import { useState } from "react";
 import { styles } from '../utils/style';
 import success from '../assets/success.png'
 import Delete from '../assets/delete.png'
+import Error from '../assets/error.png'
 import Image from 'next/image'
 export default function MessageDialog({ onCancel, index, removeTable, type, message }) {
   let title = ''
@@ -52,6 +53,20 @@ export default function MessageDialog({ onCancel, index, removeTable, type, mess
    
          </div>
          </div>
+      }
+      {type == 'error' &&
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-20">
+        <div className="bg-white p-6 rounded-lg w-[500px]">
+          <Image src={Error} alt='positive' width={40}  className='mx-auto'/>
+          <h2 className="text-xl font-semibold mb-4 text-center">{message}</h2>
+          <div className="flex gap-5 items-center justify-center">
+            <button onClick={handleCancel} className={styles.button}>
+              Close
+            </button>
+          </div>
+
+      </div>
+      </div>
       }
       
       </>

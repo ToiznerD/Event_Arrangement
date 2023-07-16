@@ -150,7 +150,7 @@ export default function GuestsManager({data}) {
   return (
     <Layout title={title} back='dashboard'>
       <div className="overflow-y-auto mx-auto scrollbar-thin scrollbar-thumb-gray-300 max-h-[500px] scrollbar-track-gray-100">
-        <table>
+        <table className="mx-auto">
           <thead>
             <tr className="text-gray-600 mt-2 md:text-2xl font-bold">
               <td className="px-4">Guest Name</td>
